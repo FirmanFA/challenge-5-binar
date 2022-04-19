@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.binar.challenge4.utils.AESEncyption
+import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge4.utils.ValidationForm.isValid
 import com.binar.challenge5.MainActivity.Companion.SHARED_FILE
 import com.binar.challenge5.databinding.FragmentLoginBinding
@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
             if (binding.etEmail.isValid() and binding.etPassword.isValid()){
                 val email = binding.etEmail.text.toString()
                 val rawPassword = binding.etPassword.text.toString()
-                val password = AESEncyption.encrypt(rawPassword).toString()
+                val password = AESEncryption.encrypt(rawPassword).toString()
 
 
                 lifecycleScope.launch(Dispatchers.IO) {

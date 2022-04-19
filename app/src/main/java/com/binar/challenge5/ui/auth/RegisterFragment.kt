@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.binar.challenge4.utils.AESEncyption
+import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge4.utils.ValidationForm.isValid
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.databinding.FragmentRegisterBinding
@@ -45,7 +45,7 @@ class RegisterFragment : Fragment() {
                 val nama = binding.etName.text.toString()
                 val password = binding.etPassword.text.toString()
 
-                val encryptedPassword = AESEncyption.encrypt(password).toString()
+                val encryptedPassword = AESEncryption.encrypt(password).toString()
 
                 val user = User(null,nama,email,encryptedPassword)
 
