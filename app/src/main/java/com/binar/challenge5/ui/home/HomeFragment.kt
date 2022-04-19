@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
@@ -37,6 +38,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.ivAccount.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
 
         homeViewModel.isLoading.observe(viewLifecycleOwner){
 //            if (it){
