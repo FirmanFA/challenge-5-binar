@@ -34,10 +34,8 @@ class SplashFragment : Fragment() {
                 val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
                 findNavController().navigate(action)
             }else{
-                val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
+                val action = SplashFragmentDirections.actionSplashFragmentToHomeFragment()
                 findNavController().navigate(action)
-//                val action = SplashFragmentDirections.actionSplashFragmentToListScheduleFragment()
-//                findNavController().navigate(action)
             }
         },2000)
 

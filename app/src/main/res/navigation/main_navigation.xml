@@ -20,8 +20,8 @@
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
         <action
-            android:id="@+id/action_splashFragment_to_listScheduleFragment"
-            app:destination="@id/listScheduleFragment"
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:enterAnim="@anim/slide_in_left"
             app:popEnterAnim="@anim/slide_in_right"
             app:popUpTo="@id/splashFragment"
@@ -39,22 +39,22 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_right" />
         <action
-            android:id="@+id/action_loginFragment_to_listScheduleFragment"
-            app:destination="@id/listScheduleFragment"
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"
             app:enterAnim="@anim/slide_in_left"
             app:popEnterAnim="@anim/slide_in_right"/>
     </fragment>
     <fragment
-        android:id="@+id/listScheduleFragment"
-        android:name="com.binar.challenge4.ui.list.ListScheduleFragment"
+        android:id="@+id/homeFragment"
+        android:name="com.binar.challenge5.ui.home.HomeFragment"
         android:label="fragment_list_schedule"
-        tools:layout="@layout/fragment_list_schedule" >
+        tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_listScheduleFragment_to_loginFragment"
+            android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
-            app:popUpTo="@id/listScheduleFragment"
+            app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true"
             app:enterAnim="@anim/slide_in_right"
             app:popEnterAnim="@anim/slide_in_left"/>
