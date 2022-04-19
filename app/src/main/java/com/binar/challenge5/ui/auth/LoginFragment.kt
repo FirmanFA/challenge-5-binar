@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
                             editor.putString("name",isLogin.name)
                             editor.apply()
                             val action = LoginFragmentDirections
-                                .actionLoginFragmentToListScheduleFragment()
+                                .actionLoginFragmentToHomeFragment()
                             it.findNavController().navigate(action)
 
                         }
