@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="tmdb_blue">#032541</color>
     <color name="tmdb_light_blue">#01b4e4</color>
+    <color name="shimmer_color">#979696</color>
 </resources>
