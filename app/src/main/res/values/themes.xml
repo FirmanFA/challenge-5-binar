@@ -15,4 +15,9 @@
         <item name="android:windowTranslucentNavigation">false</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="detail_poster">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
 </resources>

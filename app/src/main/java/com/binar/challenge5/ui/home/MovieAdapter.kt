@@ -23,7 +23,7 @@ class MovieAdapter(private val onClick:(Result)->Unit)
                 Glide.with(binding.ivPoster)
                     .load("https://image.tmdb.org/t/p/w500"+currentResult.posterPath)
                     .into(ivPoster)
-                root.setOnClickListener {
+                cardView.setOnClickListener {
                     onClick(currentResult)
                 }
             }

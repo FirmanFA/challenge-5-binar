@@ -23,7 +23,7 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     val discoverMovies: LiveData<MovieResponse> = _discoverMovies
 
     val error: MutableLiveData<String> = MutableLiveData()
-    val isLoading = MutableLiveData<Boolean>()
+    val isLoadingAiring = MutableLiveData<Boolean>()
     private val _airingMovies: MutableLiveData<MovieResponse> by lazy {
         MutableLiveData<MovieResponse>().also {
             getAiringMovies()
@@ -31,12 +31,6 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     }
     val airingMovies: LiveData<MovieResponse> = _airingMovies
 
-
-
-    val errorDetail: MutableLiveData<String> = MutableLiveData()
-    val isLoadingDetail = MutableLiveData<Boolean>()
-    private val _detailMovie: MutableLiveData<DetailMovieResponse> = MutableLiveData()
-    val detailMovie: LiveData<DetailMovieResponse> = _detailMovie
 
     private fun getDiscoverMovies(){
         isLoadingDiscover.postValue(true)
@@ -57,10 +51,10 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     }
 
     private fun getAiringMovies(){
-        isLoading.postValue(true)
+        isLoadingAiring.postValue(true)
         repository.getAiringMovies().enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                isLoading.postValue(false)
+                isLoadingAiring.postValue(false)
                 if (response.code() == 200){
                     _airingMovies.postValue(response.body())
                 }else{
@@ -69,30 +63,14 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                isLoading.postValue(false)
+                isLoadingAiring.postValue(false)
             }
         })
     }
 
 
 
-    fun getDetailMovies(id: Int){
-        isLoadingDetail.postValue(true)
-        ApiClient.instance.getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse> {
-            override fun onResponse(call: Call<DetailMovieResponse>, response: Response<DetailMovieResponse>) {
-                isLoading.postValue(false)
-                if (response.code() == 200){
-                    _detailMovie.postValue(response.body())
-                }else{
-                    errorDetail.postValue("Error")
-                }
-            }
 
-            override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
-                isLoadingDetail.postValue(false)
-            }
-        })
-    }
 }
 
 class HomeViewModelFactory(private val repository: HomeRepository) : ViewModelProvider.Factory {

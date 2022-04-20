@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -46,18 +47,26 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
 
-        homeViewModel.isLoading.observe(viewLifecycleOwner){
-//            if (it){
-////                binding.progressBar.visibility = View.VISIBLE
-////                binding.shimmerContainer.tim
-//                binding.shimmerContainer.startShimmer()
-//            }else{
-////                binding.progressBar.visibility = View.GONE
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    binding.shimmerContainer.stopShimmer()
-//                    binding.shimmerContainer.isVisible = false
-//                },2000)
-//            }
+        homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
+            if (it){
+                binding.discoverShimmer.startShimmer()
+            }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.discoverShimmer.stopShimmer()
+                    binding.discoverShimmer.isVisible = false
+                },2000)
+            }
+        }
+
+        homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
+            if (it){
+                binding.airingShimmer.startShimmer()
+            }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.airingShimmer.stopShimmer()
+                    binding.airingShimmer.isVisible = false
+                },2000)
+            }
         }
 
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
@@ -104,15 +113,8 @@ class HomeFragment : Fragment() {
 
     private fun showListMovie(results: List<Result>?) {
         val adapter= MovieAdapter {
-            //pindah fragment sambil bawa it.id
-
             val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
             findNavController().navigate(action)
-
-//            val intent = Intent(this, DetailActivity::class.java)
-//            intent.putExtra("movieId", it.id)
-//            startActivity(intent)
-//            mainViewModel.getDetailMovies(it.id)
         }
         adapter.submitList(results)
         binding.rvAiring.adapter = adapter
