@@ -19,7 +19,7 @@ class DetailViewModel(private val repository: DetailRepository):ViewModel() {
 
     fun getDetailMovies(movieId: Int){
         isLoadingDetail.postValue(true)
-        ApiClient.instance.getDetailMovie(movieId).enqueue(object : Callback<DetailMovieResponse> {
+        repository.getDetailMovies(movieId).enqueue(object : Callback<DetailMovieResponse> {
             override fun onResponse(call: Call<DetailMovieResponse>, response: Response<DetailMovieResponse>) {
                 isLoadingDetail.postValue(false)
                 if (response.code() == 200){

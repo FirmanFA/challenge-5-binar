@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
+import com.binar.challenge5.ui.auth.AuthViewModel
 import com.bumptech.glide.Glide
 
 class DetailMovieFragment : Fragment() {

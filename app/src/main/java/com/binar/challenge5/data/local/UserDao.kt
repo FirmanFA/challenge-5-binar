@@ -15,4 +15,10 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User):Long
 
+    @Query("SELECT * FROM User WHERE email = :email")
+    fun getUser(email: String): User
+
+    @Update
+    fun updatetUser(user: User):Int
+
 }

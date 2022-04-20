@@ -23,7 +23,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btn = view.findViewById<Button>(R.id.button)
+        val btn = view.findViewById<Button>(R.id.btn_register)
         btn.setOnClickListener {
             it.findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }

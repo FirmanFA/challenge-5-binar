@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge4.utils.ValidationForm.isValid
 import com.binar.challenge5.MainActivity.Companion.SHARED_FILE
+import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.databinding.FragmentLoginBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,6 +25,9 @@ class LoginFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val authViewModel by viewModels<AuthViewModel> {
+        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao()))
+    }
 
 //    private var myDatabase: MyDatabase? = null
     override fun onCreateView(
@@ -37,7 +42,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 //        myDatabase = MyDatabase.getInstance(requireContext())
-        val authRepository = AuthRepository(requireContext())
+//        val authRepository = AuthRepository(requireContext())
         val sharedPreference = requireContext()
             .getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE)
 
@@ -51,7 +56,7 @@ class LoginFragment : Fragment() {
 
                 lifecycleScope.launch(Dispatchers.IO) {
 //                    val isLogin = myDatabase?.userDao()?.login(email, password)
-                    val isLogin = authRepository.login(email, password)
+                    val isLogin = authViewModel.login(email, password)
 
                     activity?.runOnUiThread {
                         if (isLogin == null){

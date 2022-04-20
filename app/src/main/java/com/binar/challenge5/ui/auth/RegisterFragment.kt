@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge4.utils.ValidationForm.isValid
+import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.databinding.FragmentRegisterBinding
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +21,13 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
 
-    lateinit var authRepository: AuthRepository
+//    lateinit var authRepository: AuthRepository
     private val binding get() = _binding!!
+
+    private val authViewModel by viewModels<AuthViewModel> {
+        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao()))
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +40,7 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        authRepository = AuthRepository(requireContext())
+//        authRepository = AuthRepository(requireContext())
 
         binding.btnRegister.setOnClickListener {
 
@@ -51,7 +58,8 @@ class RegisterFragment : Fragment() {
 
                 lifecycleScope.launch(Dispatchers.IO) {
 
-                    val isEmailExist = authRepository.checkEmailIfExist(email)
+//                    val isEmailExist = authRepository.checkEmailIfExist(email)
+                    val isEmailExist = authViewModel.checkIfEmailExist(email)
 
                     activity?.runOnUiThread {
                         if (isEmailExist == null){
@@ -75,7 +83,7 @@ class RegisterFragment : Fragment() {
             
 //            val registeredUser = myDatabase?.userDao()?.insertUser(user)
 
-            val registeredUser = authRepository.register(user)
+            val registeredUser = authViewModel.register(user)
 
             activity?.runOnUiThread {
                 if (registeredUser == (0).toLong()){
