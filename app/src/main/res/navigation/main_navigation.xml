@@ -60,7 +60,11 @@
             app:popEnterAnim="@anim/slide_in_left"/>
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_homeFragment_to_detailMovieFragment"
             app:destination="@id/detailMovieFragment"

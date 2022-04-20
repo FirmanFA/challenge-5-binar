@@ -6,12 +6,17 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository): ViewModel() {
 
-    private val _user: MutableLiveData<User>  = MutableLiveData()
-    val user: LiveData<User> = _user
+    private val _user: MutableLiveData<User?>  = MutableLiveData()
+    val user: LiveData<User?> = _user
 
-    fun getUser(email: String) = viewModelScope.launch {
-        val tempUser = repository.getUser(email)
-        _user.postValue(tempUser)
+//    fun getUser(email: String) = viewModelScope.launch {
+//        val tempUser = repository.getUser(email)
+//        _user.postValue(tempUser)
+//    }
+
+    fun getUser(email: String){
+        val newUser = repository.getUser(email)
+        _user.postValue(newUser)
     }
 
     fun updateUser(user: User) = repository.updateUser(user)

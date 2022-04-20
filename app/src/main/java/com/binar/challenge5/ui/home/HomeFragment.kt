@@ -1,5 +1,6 @@
 package com.binar.challenge5.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.binar.challenge5.MainActivity
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.model.Result
@@ -41,6 +43,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
+        val nameLogin = sharedPreference?.getString("name","")
+        binding.tvName.text = "Welcome,\n$nameLogin!"
 
 
         binding.ivAccount.setOnClickListener {
