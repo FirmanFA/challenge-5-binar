@@ -27,16 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/iv_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_baseline_account_circle_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
@@ -55,8 +45,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_image"
-            android:layout_width="250dp"
-            android:layout_height="340dp"
+            android:layout_width="230dp"
+            android:layout_height="320dp"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="20dp"
             app:layout_constraintStart_toStartOf="@+id/textView2"
@@ -71,7 +61,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/ph_status"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -87,7 +77,7 @@
             app:layout_constraintTop_toTopOf="@+id/cv_image" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/ph_score"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -102,7 +92,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/ph_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -116,7 +106,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_score" />
 
         <TextView
-            android:id="@+id/textView13"
+            android:id="@+id/ph_lang"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -139,10 +129,10 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView5"
+            app:layout_constraintEnd_toEndOf="@+id/ph_status"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            app:layout_constraintStart_toStartOf="@+id/ph_status"
+            app:layout_constraintTop_toBottomOf="@+id/ph_status" />
 
         <TextView
             android:id="@+id/tv_score"
@@ -152,10 +142,10 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView7"
+            app:layout_constraintEnd_toEndOf="@+id/ph_score"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
+            app:layout_constraintStart_toStartOf="@+id/ph_score"
+            app:layout_constraintTop_toBottomOf="@+id/ph_score" />
 
         <TextView
             android:id="@+id/tv_release_date"
@@ -165,10 +155,10 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="@+id/ph_date"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView10"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintStart_toStartOf="@+id/ph_date"
+            app:layout_constraintTop_toBottomOf="@+id/ph_date" />
 
         <TextView
             android:id="@+id/tv_language"
@@ -178,10 +168,134 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView13"
+            app:layout_constraintEnd_toEndOf="@+id/ph_lang"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView13"
-            app:layout_constraintTop_toBottomOf="@+id/textView13" />
+            app:layout_constraintStart_toStartOf="@+id/ph_lang"
+            app:layout_constraintTop_toBottomOf="@+id/ph_lang" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:singleLine="false"
+            android:text="Title"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/cv_image"
+            app:layout_constraintTop_toBottomOf="@+id/cv_image" />
+
+        <TextView
+            android:id="@+id/ph_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:singleLine="false"
+            android:fontFamily="sans-serif-medium"
+            android:text="Overview"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_genres"
+            app:layout_constraintStart_toStartOf="@+id/tv_genres"
+            app:layout_constraintTop_toBottomOf="@+id/tv_genres" />
+
+        <TextView
+            android:id="@+id/tv_genres"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Action, SCifi"
+            android:textColor="@color/white"
+            android:singleLine="false"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:singleLine="false"
+            android:text="Action, SCifi"
+            android:textColor="@color/white"
+            android:justificationMode="inter_word"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/ph_overview"
+            app:layout_constraintStart_toStartOf="@+id/ph_overview"
+            app:layout_constraintTop_toBottomOf="@+id/ph_overview" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/detail_shimmer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView411"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/shimmer_color"/>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <TextView
+            android:id="@+id/textView411"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="Similar Movies"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_overview" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_similar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView411"
+            tools:listitem="@layout/movie_list_layout" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/similar_shimmer"
+            android:layout_width="0dp"
+            android:layout_height="220dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView411"
+            app:shimmer_auto_start="false">
+
+            <include layout="@layout/discover_shimmer_placeholder_layout" />
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

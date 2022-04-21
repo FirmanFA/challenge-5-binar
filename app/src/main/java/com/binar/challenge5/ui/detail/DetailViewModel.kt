@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.model.DetailMovieResponse
+import com.binar.challenge5.data.api.model.MovieResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +17,11 @@ class DetailViewModel(private val repository: DetailRepository):ViewModel() {
     val isLoadingDetail = MutableLiveData<Boolean>()
     private val _detailMovie: MutableLiveData<DetailMovieResponse> = MutableLiveData()
     val detailMovie: LiveData<DetailMovieResponse> = _detailMovie
+
+    val errorSimilar: MutableLiveData<String> = MutableLiveData()
+    val isLoadingSimilar = MutableLiveData<Boolean>()
+    private val _similarMovies: MutableLiveData<MovieResponse> = MutableLiveData()
+    val similarMovies: LiveData<MovieResponse> = _similarMovies
 
     fun getDetailMovies(movieId: Int){
         isLoadingDetail.postValue(true)
@@ -34,6 +40,25 @@ class DetailViewModel(private val repository: DetailRepository):ViewModel() {
             }
         })
     }
+
+    fun getSimilarMovies(movieId: Int){
+        isLoadingSimilar.postValue(true)
+        repository.getSimilarMovies(movieId).enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                isLoadingSimilar.postValue(false)
+                if (response.code() == 200){
+                    _similarMovies.postValue(response.body())
+                }else{
+                    errorSimilar.postValue("Error")
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                isLoadingSimilar.postValue(false)
+            }
+        })
+    }
+
 
 }
 

@@ -23,10 +23,10 @@ interface ApiService {
     @GET("movie/{movieId}")
     fun getDetailMovie(@Path("movieId") movieId: Int): Call<DetailMovieResponse>
 
-    @GET("movie/{movie_id}/recommendations")
+    @GET("movie/{movieId}/recommendations")
     fun getRecommendationsMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
 
-    @GET("movie/{movie_id}/similar")
+    @GET("movie/{movieId}/similar")
     fun getSimilarMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
 
 
