@@ -6,5 +6,6 @@ class DetailRepository(private val apiService: ApiService) {
 
     fun getDetailMovies(movieId: Int) = apiService.getDetailMovie(movieId)
     fun getSimilarMovies(movieId: Int) = apiService.getSimilarMovie(movieId)
+    fun getMovieReviews(movieId: Int) = apiService.getMovieReview(movieId)
 
 }

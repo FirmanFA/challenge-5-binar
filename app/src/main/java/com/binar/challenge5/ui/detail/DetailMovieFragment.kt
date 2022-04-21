@@ -1,5 +1,7 @@
 package com.binar.challenge5.ui.detail
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,14 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.model.Result
+import com.binar.challenge5.data.api.model.ReviewResponse
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
-import com.binar.challenge5.ui.auth.AuthViewModel
-import com.binar.challenge5.ui.home.HomeFragmentDirections
 import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 
@@ -120,6 +119,23 @@ class DetailMovieFragment : Fragment() {
 
         }
 
+        detailViewModel.movieReviews.observe(viewLifecycleOwner){
+            Handler(Looper.getMainLooper()).postDelayed({
+                showMovieReviews(it.results)
+            },2000)
+        }
+
+        detailViewModel.isLoadingReview.observe(viewLifecycleOwner){
+            if (it){
+                binding.reviewShimmer.startShimmer()
+            }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.reviewShimmer.stopShimmer()
+                    binding.reviewShimmer.isVisible = false
+                },2000)
+            }
+        }
+
         detailViewModel.isLoadingSimilar.observe(viewLifecycleOwner){
             if (it){
                 binding.similarShimmer.startShimmer()
@@ -139,7 +155,23 @@ class DetailMovieFragment : Fragment() {
 
         detailViewModel.getDetailMovies(movieId)
         detailViewModel.getSimilarMovies(movieId)
+        detailViewModel.getMovieReviews(movieId)
 
+    }
+
+    private fun showMovieReviews(results: List<ReviewResponse.Result>) {
+        val adapter= ReviewAdapter {
+
+            val dialogBuilder = AlertDialog.Builder(requireContext())
+            dialogBuilder.setTitle(it.author)
+            dialogBuilder.setMessage(it.content)
+            dialogBuilder.setPositiveButton("OK") { dialogInterface, i ->
+                dialogInterface.dismiss()
+            }
+            dialogBuilder.create().show()
+        }
+        adapter.submitList(results)
+        binding.rvReview.adapter = adapter
     }
 
     private fun showSimilarMovies(results: List<Result>) {
