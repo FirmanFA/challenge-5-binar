@@ -45,6 +45,13 @@ class DetailMovieFragment : Fragment() {
                 tvScore.text = (it.voteAverage*10).toString()
                 tvReleaseDate.text = it.releaseDate
                 tvLanguage.text = it.originalLanguage
+                tvTitle.text = it.title
+                val genreName = arrayListOf<String>()
+                it.genres.forEach {
+                    genreName.add(it.name)
+                }
+                tvGenres.text = genreName.joinToString()
+                tvOverview.text = it.overview
             }
         }
 

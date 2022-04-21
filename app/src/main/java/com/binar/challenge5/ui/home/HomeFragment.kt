@@ -75,6 +75,28 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeViewModel.isLoadingUpcoming.observe(viewLifecycleOwner){
+            if (it){
+                binding.upcomingShimmer.startShimmer()
+            }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.upcomingShimmer.stopShimmer()
+                    binding.upcomingShimmer.isVisible = false
+                },2000)
+            }
+        }
+
+        homeViewModel.isLoadingTopRated.observe(viewLifecycleOwner){
+            if (it){
+                binding.topratedShimmer.startShimmer()
+            }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    binding.topratedShimmer.stopShimmer()
+                    binding.topratedShimmer.isVisible = false
+                },2000)
+            }
+        }
+
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
             Handler(Looper.getMainLooper()).postDelayed({
                 showDiscoverMovies(it.results)
@@ -83,15 +105,48 @@ class HomeFragment : Fragment() {
 
         homeViewModel.airingMovies.observe(viewLifecycleOwner) {
             Handler(Looper.getMainLooper()).postDelayed({
-                showListMovie(it.results)
+                showAiringMovies(it.results)
+            },2000)
+        }
+
+        homeViewModel.upcomingMovies.observe(viewLifecycleOwner) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                showUpcomingMovies(it.results)
+            },2000)
+        }
+
+        homeViewModel.topRatedMovies.observe(viewLifecycleOwner) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                showTopRatedMovies(it.results)
             },2000)
         }
 
 
     }
 
+    private fun showTopRatedMovies(results: List<Result>) {
+        val adapter= MovieAdapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+            findNavController().navigate(action)
+        }
+        adapter.submitList(results)
+        binding.rvToprated.adapter = adapter
+    }
+
+    private fun showUpcomingMovies(results: List<Result>) {
+        val adapter= MovieAdapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+            findNavController().navigate(action)
+        }
+        adapter.submitList(results)
+        binding.rvUpcoming.adapter = adapter
+    }
+
     private fun showDiscoverMovies(results: List<Result>?){
-        val discoverAdapter = DiscoverAdapter{}
+        val discoverAdapter = DiscoverAdapter{
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+            findNavController().navigate(action)
+        }
         discoverAdapter.submitList(results)
         binding.vpDiscover.adapter = discoverAdapter
         binding.vpDiscover.offscreenPageLimit = 1
@@ -117,7 +172,7 @@ class HomeFragment : Fragment() {
         binding.vpDiscover.currentItem = 1
     }
 
-    private fun showListMovie(results: List<Result>?) {
+    private fun showAiringMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
             findNavController().navigate(action)

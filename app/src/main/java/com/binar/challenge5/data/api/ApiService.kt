@@ -14,9 +14,20 @@ interface ApiService {
     @GET("discover/movie")
     fun getDiscoverMovie(): Call<MovieResponse>
 
+    @GET("movie/upcoming")
+    fun getUpcomingMovie(): Call<MovieResponse>
+
+    @GET("movie/top_rated")
+    fun getTopRatedMovie(): Call<MovieResponse>
+
     @GET("movie/{movieId}")
     fun getDetailMovie(@Path("movieId") movieId: Int): Call<DetailMovieResponse>
 
+    @GET("movie/{movie_id}/recommendations")
+    fun getRecommendationsMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
+
+    @GET("movie/{movie_id}/similar")
+    fun getSimilarMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
 
 
 

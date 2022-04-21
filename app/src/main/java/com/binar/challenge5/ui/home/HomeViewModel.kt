@@ -22,7 +22,7 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     }
     val discoverMovies: LiveData<MovieResponse> = _discoverMovies
 
-    val error: MutableLiveData<String> = MutableLiveData()
+    val errorAiring: MutableLiveData<String> = MutableLiveData()
     val isLoadingAiring = MutableLiveData<Boolean>()
     private val _airingMovies: MutableLiveData<MovieResponse> by lazy {
         MutableLiveData<MovieResponse>().also {
@@ -30,6 +30,27 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
         }
     }
     val airingMovies: LiveData<MovieResponse> = _airingMovies
+
+
+    val errorUpcoming: MutableLiveData<String> = MutableLiveData()
+    val isLoadingUpcoming = MutableLiveData<Boolean>()
+    private val _upcomingMovies: MutableLiveData<MovieResponse> by lazy {
+        MutableLiveData<MovieResponse>().also {
+            getUpcomingMovies()
+        }
+    }
+
+    val upcomingMovies: LiveData<MovieResponse> = _upcomingMovies
+
+
+    val errorTopRated: MutableLiveData<String> = MutableLiveData()
+    val isLoadingTopRated = MutableLiveData<Boolean>()
+    private val _topRatedMovies: MutableLiveData<MovieResponse> by lazy {
+        MutableLiveData<MovieResponse>().also {
+            getTopRatedMovies()
+        }
+    }
+    val topRatedMovies: LiveData<MovieResponse> = _topRatedMovies
 
 
     private fun getDiscoverMovies(){
@@ -58,12 +79,47 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
                 if (response.code() == 200){
                     _airingMovies.postValue(response.body())
                 }else{
-                    error.postValue("Error")
+                    errorAiring.postValue("Error")
                 }
             }
 
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
                 isLoadingAiring.postValue(false)
+            }
+        })
+    }
+
+    private fun getUpcomingMovies() {
+        isLoadingUpcoming.postValue(true)
+        repository.getUpcomingMovies().enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                isLoadingUpcoming.postValue(false)
+                if (response.code() == 200){
+                    _upcomingMovies.postValue(response.body())
+                }else{
+                    errorUpcoming.postValue("Error")
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                isLoadingUpcoming.postValue(false)
+            }
+        })
+    }
+    private fun getTopRatedMovies() {
+        isLoadingTopRated.postValue(true)
+        repository.getTopRatedMovies().enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                isLoadingTopRated.postValue(false)
+                if (response.code() == 200){
+                    _topRatedMovies.postValue(response.body())
+                }else{
+                    errorTopRated.postValue("Error")
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                isLoadingTopRated.postValue(false)
             }
         })
     }

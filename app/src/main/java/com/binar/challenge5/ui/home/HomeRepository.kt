@@ -7,6 +7,8 @@ class HomeRepository(private val apiService: ApiService) {
 
     fun getAiringMovies() = apiService.getAiringMovie()
     fun getDiscoverMovies() = apiService.getDiscoverMovie()
+    fun getUpcomingMovies() = apiService.getUpcomingMovie()
+    fun getTopRatedMovies() = apiService.getTopRatedMovie()
 
 
 }
