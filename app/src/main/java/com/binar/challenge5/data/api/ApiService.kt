@@ -8,6 +8,8 @@ import retrofit2.http.*
 
 interface ApiService {
 
+    @GET("tv/popular")
+    fun getPopularTv(): Call<MovieResponse>
 
     @GET("movie/now_playing")
     fun getAiringMovie(): Call<MovieResponse>

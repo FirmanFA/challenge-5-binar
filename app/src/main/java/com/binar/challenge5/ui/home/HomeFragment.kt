@@ -121,7 +121,19 @@ class HomeFragment : Fragment() {
             },2000)
         }
 
+        homeViewModel.popularTv.observe(viewLifecycleOwner){
+            showPopularTv(it.results)
+        }
 
+    }
+
+    private fun showPopularTv(results: List<Result>) {
+        val adapter= MovieAdapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+            findNavController().navigate(action)
+        }
+        adapter.submitList(results)
+        binding.rvTv.adapter = adapter
     }
 
     private fun showTopRatedMovies(results: List<Result>) {
@@ -173,12 +185,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAiringMovies(results: List<Result>?) {
-        val adapter= MovieAdapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
-        }
-        adapter.submitList(results)
-        binding.rvAiring.adapter = adapter
+//        val adapter= MovieAdapter {
+//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+//            findNavController().navigate(action)
+//        }
+//        adapter.submitList(results)
+//        binding.rvAiring.adapter = adapter
 
     }
 

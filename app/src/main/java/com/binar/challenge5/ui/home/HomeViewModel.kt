@@ -52,6 +52,32 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     }
     val topRatedMovies: LiveData<MovieResponse> = _topRatedMovies
 
+    val errorPopularTv: MutableLiveData<String> = MutableLiveData()
+    val isLoadingPopularTv = MutableLiveData<Boolean>()
+    private val _popularTv: MutableLiveData<MovieResponse> by lazy {
+        MutableLiveData<MovieResponse>().also {
+            getPopularTv()
+        }
+    }
+    val popularTv: LiveData<MovieResponse> = _popularTv
+
+    private fun getPopularTv() {
+        isLoadingPopularTv.postValue(true)
+        repository.getPopularTv().enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                isLoadingPopularTv.postValue(false)
+                if (response.code() == 200){
+                    _popularTv.postValue(response.body())
+                }else{
+                    errorPopularTv.postValue("Error")
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                isLoadingPopularTv.postValue(false)
+            }
+        })
+    }
 
     private fun getDiscoverMovies(){
         isLoadingDiscover.postValue(true)
