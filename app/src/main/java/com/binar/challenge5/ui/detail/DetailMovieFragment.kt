@@ -25,6 +25,7 @@ import com.binar.challenge5.data.local.FavoriteDao
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
+import com.binar.challenge5.repository.DetailRepository
 import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
@@ -37,11 +38,12 @@ class DetailMovieFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DetailMovieFragmentArgs by navArgs()
 
-    var isFavorite = false
 
     private val detailViewModel by viewModels<DetailViewModel> {
-        DetailViewModelFactory(DetailRepository(ApiClient.instance,
-            MyDatabase.getInstance(requireContext())!!.favoriteDao()))
+        DetailViewModelFactory(
+            DetailRepository(ApiClient.instance,
+            MyDatabase.getInstance(requireContext())!!.favoriteDao())
+        )
     }
 
     override fun onCreateView(
@@ -225,21 +227,9 @@ class DetailMovieFragment : Fragment() {
         //setup favorite icon
         detailViewModel.isFavoriteExist.observe(viewLifecycleOwner){
             if (it){
-                Glide.with(binding.ivFavorite)
-                    .load(
-                        ResourcesCompat
-                            .getDrawable(requireContext().resources,
-                                R.drawable.ic_baseline_favorite_24,
-                                requireContext().theme))
-                    .into(binding.ivFavorite)
+                binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             }else{
-                Glide.with(binding.ivFavorite)
-                    .load(
-                        ResourcesCompat
-                            .getDrawable(requireContext().resources,
-                                R.drawable.ic_baseline_favorite_border_24,
-                                requireContext().theme))
-                    .into(binding.ivFavorite)
+                binding.ivFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
 

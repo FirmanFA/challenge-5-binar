@@ -20,6 +20,7 @@ import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
+import com.binar.challenge5.repository.HomeRepository
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
 import kotlin.math.abs
 
@@ -52,6 +53,9 @@ class HomeFragment : Fragment() {
 
         binding.ivAccount.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+        }
+        binding.ivFavorite.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
         }
 
 //        homeViewModel.discoverMovies.observe(viewLifecycleOwner){

@@ -1,4 +1,4 @@
-package com.binar.challenge5.ui.home
+package com.binar.challenge5.repository
 
 import com.binar.challenge5.data.api.ApiService
 

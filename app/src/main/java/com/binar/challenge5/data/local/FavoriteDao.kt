@@ -6,7 +6,7 @@ import com.binar.challenge5.data.local.model.Favorite
 @Dao
 interface FavoriteDao {
     @Query("SELECT * FROM Favorite")
-    fun readFavorites(): List<Favorite>
+    suspend fun readFavorites(): List<Favorite>
 
     @Query("SELECT * FROM Favorite WHERE id=:id")
     fun readFavoriteById(id: Int): Favorite?

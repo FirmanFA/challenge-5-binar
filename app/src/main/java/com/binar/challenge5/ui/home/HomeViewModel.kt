@@ -1,18 +1,15 @@
 package com.binar.challenge5.ui.home
 
-import android.util.Log
 import androidx.lifecycle.*
-import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Resource
-import com.binar.challenge5.data.api.model.DetailMovieResponse
 import com.binar.challenge5.data.api.model.MovieResponse
+import com.binar.challenge5.repository.HomeRepository
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class HomeViewModel(private val repository: HomeRepository): ViewModel() {
-
 
     private val _airingMovies = MutableLiveData<Resource<MovieResponse>>()
     val airingMovies: LiveData<Resource<MovieResponse>> get() = _airingMovies

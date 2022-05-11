@@ -6,6 +6,7 @@ import com.binar.challenge5.data.api.model.DetailMovieResponse
 import com.binar.challenge5.data.api.model.MovieResponse
 import com.binar.challenge5.data.api.model.ReviewResponse
 import com.binar.challenge5.data.local.model.Favorite
+import com.binar.challenge5.repository.DetailRepository
 import kotlinx.coroutines.launch
 
 class DetailViewModel(private val repository: DetailRepository):ViewModel() {

@@ -3,6 +3,7 @@ package com.binar.challenge5.ui.auth
 import androidx.lifecycle.*
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.data.local.model.User
+import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository): ViewModel() {
@@ -11,8 +12,10 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
     val user: LiveData<User?> = _user
 
     fun getUser(email: String){
-        val newUser = repository.getUser(email)
-        _user.postValue(newUser)
+        viewModelScope.launch {
+            val newUser = repository.getUser(email)
+            _user.postValue(newUser)
+        }
     }
 
     fun updateUser(user: User) = repository.updateUser(user)

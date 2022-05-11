@@ -15,6 +15,7 @@ import com.binar.challenge4.utils.ValidationForm.isValid
 import com.binar.challenge5.MainActivity.Companion.SHARED_FILE
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.databinding.FragmentLoginBinding
+import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

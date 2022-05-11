@@ -24,7 +24,8 @@ import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.databinding.FragmentHomeBinding
 import com.binar.challenge5.databinding.FragmentProfileBinding
-import com.binar.challenge5.ui.home.HomeRepository
+import com.binar.challenge5.repository.AuthRepository
+import com.binar.challenge5.repository.HomeRepository
 import com.binar.challenge5.ui.home.HomeViewModel
 import com.binar.challenge5.ui.home.HomeViewModelFactory
 import com.binar.challenge5.utils.AESEncryption
@@ -74,9 +75,7 @@ class ProfileFragment : Fragment() {
             iduser = it?.id
         }
 
-        lifecycleScope.launch(Dispatchers.IO){
-            authViewModel.getUser(email.toString())
-        }
+        authViewModel.getUser(email.toString())
 
         binding.btnUpdate.setOnClickListener {
             val name = binding.etName.text.toString()
@@ -89,9 +88,7 @@ class ProfileFragment : Fragment() {
 
                 activity?.runOnUiThread {
                     if (updateUser!=0){
-                        lifecycleScope.launch(Dispatchers.IO){
-                            authViewModel.getUser(email.toString())
-                        }
+                        authViewModel.getUser(email.toString())
                         Toast.makeText(requireContext(), "update berhasil", Toast.LENGTH_SHORT).show()
                         val editor = sharedPreference!!.edit()
                         editor.putString("name",name)
@@ -102,7 +99,7 @@ class ProfileFragment : Fragment() {
             if (imageUri==null){
                 Toast.makeText(context, "Default avatar", Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(context, URIPathHelper().getPath(requireContext(), imageUri!!), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, imageUri.toString(), Toast.LENGTH_SHORT).show()
             }
 
 
