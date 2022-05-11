@@ -1,7 +1,6 @@
 package com.binar.challenge5.ui.auth
 
 import androidx.lifecycle.*
-import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.launch

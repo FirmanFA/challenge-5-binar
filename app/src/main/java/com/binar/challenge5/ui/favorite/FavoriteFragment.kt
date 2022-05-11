@@ -6,15 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentFavoriteBinding
 import com.binar.challenge5.repository.FavoriteRepository
 import com.binar.challenge5.ui.home.FavoriteAdapter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FavoriteFragment : Fragment() {
 

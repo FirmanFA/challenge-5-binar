@@ -2,15 +2,11 @@ package com.binar.challenge5.ui.detail
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,10 +14,8 @@ import androidx.navigation.fragment.navArgs
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
-import com.binar.challenge5.data.api.model.DetailMovieResponse
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.data.api.model.ReviewResponse
-import com.binar.challenge5.data.local.FavoriteDao
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
@@ -30,7 +24,6 @@ import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class DetailMovieFragment : Fragment() {
 

@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
@@ -19,17 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.binar.challenge5.MainActivity
 import com.binar.challenge5.R
-import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
-import com.binar.challenge5.databinding.FragmentHomeBinding
 import com.binar.challenge5.databinding.FragmentProfileBinding
 import com.binar.challenge5.repository.AuthRepository
-import com.binar.challenge5.repository.HomeRepository
-import com.binar.challenge5.ui.home.HomeViewModel
-import com.binar.challenge5.ui.home.HomeViewModelFactory
 import com.binar.challenge5.utils.AESEncryption
-import com.binar.challenge5.utils.URIPathHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
