@@ -1,6 +1,7 @@
 package com.binar.challenge5.ui.auth
 
 import androidx.lifecycle.*
+import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.data.local.model.User
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
     fun register(user: User) = repository.register(user)
 
     fun checkIfEmailExist(email: String) = repository.checkEmailIfExist(email)
+
 
 
 }

@@ -110,7 +110,7 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_tv"
+            android:id="@+id/rv_airing"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -153,7 +153,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/rv_airing" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_upcoming"
@@ -230,5 +230,17 @@
             <include layout="@layout/discover_shimmer_placeholder_layout" />
 
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_baseline_favorite_24"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_account"
+            app:layout_constraintEnd_toStartOf="@+id/iv_account"
+            app:layout_constraintTop_toTopOf="@+id/iv_account"
+            app:tint="@color/white"
+            android:contentDescription="favorite" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -1,88 +1,68 @@
 package com.binar.challenge5.ui.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.binar.challenge5.data.api.ApiClient
+import androidx.lifecycle.*
+import com.binar.challenge5.data.api.Resource
 import com.binar.challenge5.data.api.model.DetailMovieResponse
 import com.binar.challenge5.data.api.model.MovieResponse
 import com.binar.challenge5.data.api.model.ReviewResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.binar.challenge5.data.local.model.Favorite
+import kotlinx.coroutines.launch
 
 class DetailViewModel(private val repository: DetailRepository):ViewModel() {
 
-    val errorDetail: MutableLiveData<String> = MutableLiveData()
-    val isLoadingDetail = MutableLiveData<Boolean>()
-    private val _detailMovie: MutableLiveData<DetailMovieResponse> = MutableLiveData()
-    val detailMovie: LiveData<DetailMovieResponse> = _detailMovie
 
-    val errorSimilar: MutableLiveData<String> = MutableLiveData()
-    val isLoadingSimilar = MutableLiveData<Boolean>()
-    private val _similarMovies: MutableLiveData<MovieResponse> = MutableLiveData()
-    val similarMovies: LiveData<MovieResponse> = _similarMovies
+    private val _detailMovie = MutableLiveData<Resource<DetailMovieResponse>>()
+    val detailMovie: LiveData<Resource<DetailMovieResponse>> get() = _detailMovie
 
-    val errorReview: MutableLiveData<String> = MutableLiveData()
-    val isLoadingReview = MutableLiveData<Boolean>()
-    private val _movieReviews: MutableLiveData<ReviewResponse> = MutableLiveData()
-    val movieReviews: LiveData<ReviewResponse> = _movieReviews
+    private val _similarMovies = MutableLiveData<Resource<MovieResponse>>()
+    val similarMovies: LiveData<Resource<MovieResponse>> get() = _similarMovies
 
-    fun getDetailMovies(movieId: Int){
-        isLoadingDetail.postValue(true)
-        repository.getDetailMovies(movieId).enqueue(object : Callback<DetailMovieResponse> {
-            override fun onResponse(call: Call<DetailMovieResponse>, response: Response<DetailMovieResponse>) {
-                isLoadingDetail.postValue(false)
-                if (response.code() == 200){
-                    _detailMovie.postValue(response.body())
-                }else{
-                    errorDetail.postValue("Error")
-                }
+    private val _movieReviews = MutableLiveData<Resource<ReviewResponse>>()
+    val movieReviews: LiveData<Resource<ReviewResponse>> get() = _movieReviews
+
+    fun getDetailMovie(movieId: Int){
+        viewModelScope.launch {
+            _detailMovie.postValue(Resource.loading())
+            try {
+                _detailMovie.postValue(Resource.success(repository.getDetailMovie(movieId)))
+            }catch (exp: Exception){
+                _detailMovie.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
             }
-
-            override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
-                isLoadingDetail.postValue(false)
-            }
-        })
+        }
     }
 
     fun getSimilarMovies(movieId: Int){
-        isLoadingSimilar.postValue(true)
-        repository.getSimilarMovies(movieId).enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                isLoadingSimilar.postValue(false)
-                if (response.code() == 200){
-                    _similarMovies.postValue(response.body())
-                }else{
-                    errorSimilar.postValue("Error")
-                }
+        viewModelScope.launch {
+            _similarMovies.postValue(Resource.loading())
+            try {
+                _similarMovies.postValue(Resource.success(repository.getSimilarMovies(movieId)))
+            }catch (exp: Exception){
+                _similarMovies.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
             }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                isLoadingSimilar.postValue(false)
-            }
-        })
+        }
     }
-
     fun getMovieReviews(movieId: Int){
-        isLoadingReview.postValue(true)
-        repository.getMovieReviews(movieId).enqueue(object : Callback<ReviewResponse> {
-            override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
-                isLoadingReview.postValue(false)
-                if (response.code() == 200){
-                    _movieReviews.postValue(response.body())
-                }else{
-                    errorReview.postValue("Error")
-                }
+        viewModelScope.launch {
+            _movieReviews.postValue(Resource.loading())
+            try {
+                _movieReviews.postValue(Resource.success(repository.getMovieReviews(movieId)))
+            }catch (exp: Exception){
+                _movieReviews.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
             }
-
-            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-                isLoadingReview.postValue(false)
-            }
-        })
+        }
     }
 
+    //favorite teritory
+    private val _isFavoriteExist = MutableLiveData<Boolean>()
+    val isFavoriteExist = _isFavoriteExist
+
+    fun changeFavorite(state: Boolean){
+        _isFavoriteExist.postValue(state)
+    }
+
+    fun getFavoriteById(movieId: Int) = repository.getFavoriteById(movieId)
+    fun addToFavorite(favorite: Favorite) = repository.addToFavorite(favorite)
+    fun removeFromFavorite(favorite: Favorite) = repository.removeFromFavorite(favorite)
 
 }
 

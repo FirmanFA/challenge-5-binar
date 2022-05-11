@@ -8,15 +8,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.binar.challenge5.MainActivity
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
+import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
@@ -53,6 +54,86 @@ class HomeFragment : Fragment() {
             it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
         }
 
+//        homeViewModel.discoverMovies.observe(viewLifecycleOwner){
+//
+//            when(it.status){
+//                Status.LOADING -> {
+//                    binding.discoverShimmer.startShimmer()
+//                }
+//                Status.SUCCESS -> {
+//                    binding.discoverShimmer.stopShimmer()
+//                    binding.discoverShimmer.isVisible = false
+//                    showDiscoverMovies(it.data?.results)
+//                }
+//                Status.ERROR -> {
+//                    binding.discoverShimmer.stopShimmer()
+//                    binding.discoverShimmer.isVisible = false
+//                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//        }
+
+        homeViewModel.airingMovies.observe(viewLifecycleOwner){
+
+            when(it.status){
+                Status.LOADING -> {
+                    binding.airingShimmer.startShimmer()
+                }
+                Status.SUCCESS -> {
+                    binding.airingShimmer.stopShimmer()
+                    binding.airingShimmer.isVisible = false
+                    showAiringMovies(it.data?.results)
+                }
+                Status.ERROR -> {
+                    binding.airingShimmer.stopShimmer()
+                    binding.airingShimmer.isVisible = false
+                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+        homeViewModel.upcomingMovies.observe(viewLifecycleOwner){
+
+            when(it.status){
+                Status.LOADING -> {
+                    binding.upcomingShimmer.startShimmer()
+                }
+                Status.SUCCESS -> {
+                    binding.upcomingShimmer.stopShimmer()
+                    binding.upcomingShimmer.isVisible = false
+                    showUpcomingMovies(it.data?.results)
+                }
+                Status.ERROR -> {
+                    binding.upcomingShimmer.stopShimmer()
+                    binding.upcomingShimmer.isVisible = false
+                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+        homeViewModel.topRatedMovies.observe(viewLifecycleOwner){
+
+            when(it.status){
+                Status.LOADING -> {
+                    binding.topratedShimmer.startShimmer()
+                }
+                Status.SUCCESS -> {
+                    binding.topratedShimmer.stopShimmer()
+                    binding.topratedShimmer.isVisible = false
+                    showTopRatedMovies(it.data?.results)
+                }
+                Status.ERROR -> {
+                    binding.topratedShimmer.stopShimmer()
+                    binding.topratedShimmer.isVisible = false
+                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
         homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
             if (it){
                 binding.discoverShimmer.startShimmer()
@@ -64,79 +145,23 @@ class HomeFragment : Fragment() {
             }
         }
 
-        homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
-            if (it){
-                binding.airingShimmer.startShimmer()
-            }else{
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.airingShimmer.stopShimmer()
-                    binding.airingShimmer.isVisible = false
-                },2000)
-            }
-        }
-
-        homeViewModel.isLoadingUpcoming.observe(viewLifecycleOwner){
-            if (it){
-                binding.upcomingShimmer.startShimmer()
-            }else{
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.upcomingShimmer.stopShimmer()
-                    binding.upcomingShimmer.isVisible = false
-                },2000)
-            }
-        }
-
-        homeViewModel.isLoadingTopRated.observe(viewLifecycleOwner){
-            if (it){
-                binding.topratedShimmer.startShimmer()
-            }else{
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.topratedShimmer.stopShimmer()
-                    binding.topratedShimmer.isVisible = false
-                },2000)
-            }
-        }
-
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
             Handler(Looper.getMainLooper()).postDelayed({
                 showDiscoverMovies(it.results)
             },2000)
         }
 
-        homeViewModel.airingMovies.observe(viewLifecycleOwner) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                showAiringMovies(it.results)
-            },2000)
+        homeViewModel.apply {
+//            getDiscoverMovies()
+            getUpcomingMovies()
+            getAiringMovies()
+            getTopRatedMovies()
         }
 
-        homeViewModel.upcomingMovies.observe(viewLifecycleOwner) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                showUpcomingMovies(it.results)
-            },2000)
-        }
-
-        homeViewModel.topRatedMovies.observe(viewLifecycleOwner) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                showTopRatedMovies(it.results)
-            },2000)
-        }
-
-        homeViewModel.popularTv.observe(viewLifecycleOwner){
-            showPopularTv(it.results)
-        }
 
     }
 
-    private fun showPopularTv(results: List<Result>) {
-        val adapter= MovieAdapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
-        }
-        adapter.submitList(results)
-        binding.rvTv.adapter = adapter
-    }
-
-    private fun showTopRatedMovies(results: List<Result>) {
+    private fun showTopRatedMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
             findNavController().navigate(action)
@@ -145,7 +170,7 @@ class HomeFragment : Fragment() {
         binding.rvToprated.adapter = adapter
     }
 
-    private fun showUpcomingMovies(results: List<Result>) {
+    private fun showUpcomingMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
             findNavController().navigate(action)
@@ -185,12 +210,12 @@ class HomeFragment : Fragment() {
     }
 
     private fun showAiringMovies(results: List<Result>?) {
-//        val adapter= MovieAdapter {
-//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-//            findNavController().navigate(action)
-//        }
-//        adapter.submitList(results)
-//        binding.rvAiring.adapter = adapter
+        val adapter= MovieAdapter {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+            findNavController().navigate(action)
+        }
+        adapter.submitList(results)
+        binding.rvAiring.adapter = adapter
 
     }
 

@@ -1,13 +1,18 @@
 package com.binar.challenge5.ui.auth
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,12 +28,15 @@ import com.binar.challenge5.ui.home.HomeRepository
 import com.binar.challenge5.ui.home.HomeViewModel
 import com.binar.challenge5.ui.home.HomeViewModelFactory
 import com.binar.challenge5.utils.AESEncryption
+import com.binar.challenge5.utils.URIPathHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class ProfileFragment : Fragment() {
 
+    private var imageUri: Uri? = null
+    private var selectedImage = false
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -51,6 +59,10 @@ class ProfileFragment : Fragment() {
         val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
 
 
+        binding.ivPhotoProfile.setOnClickListener {
+            openGallery()
+        }
+
 
         val email = sharedPreference?.getString("islogin","")
         var iduser: Int? = -1
@@ -65,7 +77,6 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launch(Dispatchers.IO){
             authViewModel.getUser(email.toString())
         }
-        
 
         binding.btnUpdate.setOnClickListener {
             val name = binding.etName.text.toString()
@@ -88,6 +99,13 @@ class ProfileFragment : Fragment() {
                     }
                 }
             }
+            if (imageUri==null){
+                Toast.makeText(context, "Default avatar", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context, URIPathHelper().getPath(requireContext(), imageUri!!), Toast.LENGTH_SHORT).show()
+            }
+
+
             
             
         }
@@ -101,6 +119,22 @@ class ProfileFragment : Fragment() {
             it.findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
+
+    private var galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            imageUri = data?.data
+            binding.ivPhotoProfile.setImageURI(imageUri)
+            selectedImage = true
+        }
+    }
+
+
+    private fun openGallery() {
+        val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        galleryLauncher.launch(intentGallery)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

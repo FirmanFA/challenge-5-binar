@@ -4,36 +4,34 @@ import com.binar.challenge5.data.api.model.DetailMovieResponse
 import com.binar.challenge5.data.api.model.MovieResponse
 import com.binar.challenge5.data.api.model.ReviewResponse
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface ApiService {
 
     @GET("tv/popular")
-    fun getPopularTv(): Call<MovieResponse>
+    suspend fun getPopularTv(): MovieResponse
 
     @GET("movie/now_playing")
-    fun getAiringMovie(): Call<MovieResponse>
+    suspend fun getAiringMovie(): MovieResponse
 
     @GET("discover/movie")
     fun getDiscoverMovie(): Call<MovieResponse>
 
     @GET("movie/upcoming")
-    fun getUpcomingMovie(): Call<MovieResponse>
+    suspend fun getUpcomingMovie(): MovieResponse
 
     @GET("movie/top_rated")
-    fun getTopRatedMovie(): Call<MovieResponse>
+    suspend fun getTopRatedMovie(): MovieResponse
 
     @GET("movie/{movieId}")
-    fun getDetailMovie(@Path("movieId") movieId: Int): Call<DetailMovieResponse>
-
-    @GET("movie/{movieId}/recommendations")
-    fun getRecommendationsMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
+    suspend fun getDetailMovie(@Path("movieId") movieId: Int): DetailMovieResponse
 
     @GET("movie/{movieId}/similar")
-    fun getSimilarMovie(@Path("movieId") movieId: Int): Call<MovieResponse>
+    suspend fun getSimilarMovie(@Path("movieId") movieId: Int): MovieResponse
 
     @GET("movie/{movieId}/reviews")
-    fun getMovieReview(@Path("movieId") movieId: Int): Call<ReviewResponse>
+    suspend fun getMovieReview(@Path("movieId") movieId: Int): ReviewResponse
 
 
 
