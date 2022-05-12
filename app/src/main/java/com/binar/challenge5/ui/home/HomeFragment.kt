@@ -20,6 +20,7 @@ import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
+import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.HomeRepository
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
 import kotlin.math.abs
@@ -31,7 +32,9 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val homeViewModel by viewModels<HomeViewModel> {
-        HomeViewModelFactory(HomeRepository(ApiClient.instance))
+        HomeViewModelFactory(HomeRepository(ApiClient.instance,
+        UserDataStoreManager(requireContext())
+        ))
     }
 
     override fun onCreateView(
@@ -46,9 +49,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
-        val nameLogin = sharedPreference?.getString("name","")
-        binding.tvName.text = "Welcome,\n$nameLogin!"
+//        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
+//        val nameLogin = sharedPreference?.getString("name","")
+//        binding.tvName.text = "Welcome,\n$nameLogin!"
+
+        homeViewModel.namaPreference.observe(viewLifecycleOwner){
+            binding.tvName.text = "Welcome,\n$it!"
+        }
 
 
         binding.ivAccount.setOnClickListener {
@@ -57,26 +64,6 @@ class HomeFragment : Fragment() {
         binding.ivFavorite.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
         }
-
-//        homeViewModel.discoverMovies.observe(viewLifecycleOwner){
-//
-//            when(it.status){
-//                Status.LOADING -> {
-//                    binding.discoverShimmer.startShimmer()
-//                }
-//                Status.SUCCESS -> {
-//                    binding.discoverShimmer.stopShimmer()
-//                    binding.discoverShimmer.isVisible = false
-//                    showDiscoverMovies(it.data?.results)
-//                }
-//                Status.ERROR -> {
-//                    binding.discoverShimmer.stopShimmer()
-//                    binding.discoverShimmer.isVisible = false
-//                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//        }
 
         homeViewModel.airingMovies.observe(viewLifecycleOwner){
 

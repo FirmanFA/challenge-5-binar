@@ -21,6 +21,7 @@ import com.binar.challenge5.R
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.databinding.FragmentProfileBinding
+import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import com.binar.challenge5.utils.AESEncryption
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +36,10 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao()))
+        AuthViewModelFactory(AuthRepository(
+            MyDatabase.getInstance(requireContext())!!.userDao(),
+            UserDataStoreManager(requireContext())
+        ))
     }
 
     override fun onCreateView(
@@ -50,15 +54,21 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
+//        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
 
 
         binding.ivPhotoProfile.setOnClickListener {
             openGallery()
         }
 
+//        val email = sharedPreference?.getString("islogin","")
+        var email = ""
 
-        val email = sharedPreference?.getString("islogin","")
+        authViewModel.emailPreference.observe(viewLifecycleOwner){
+            email = it
+            authViewModel.getUser(email)
+        }
+
         var iduser: Int? = -1
         authViewModel.user.observe(viewLifecycleOwner){
             binding.apply {
@@ -68,24 +78,24 @@ class ProfileFragment : Fragment() {
             iduser = it?.id
         }
 
-        authViewModel.getUser(email.toString())
 
         binding.btnUpdate.setOnClickListener {
             val name = binding.etName.text.toString()
             val rawPassword = binding.etPassword.text.toString()
             val password = AESEncryption.encrypt(rawPassword).toString()
-            val user = User(iduser,name,email.toString(),password)
+            val user = User(iduser,name,email,password)
 
             lifecycleScope.launch(Dispatchers.IO){
                 val updateUser = authViewModel.updateUser(user)
 
                 activity?.runOnUiThread {
                     if (updateUser!=0){
-                        authViewModel.getUser(email.toString())
+                        authViewModel.getUser(email)
                         Toast.makeText(requireContext(), "update berhasil", Toast.LENGTH_SHORT).show()
-                        val editor = sharedPreference!!.edit()
-                        editor.putString("name",name)
-                        editor.apply()
+//                        val editor = sharedPreference!!.edit()
+//                        editor.putString("name",name)
+//                        editor.apply()
+                        authViewModel.setNamaPreference(name)
                     }
                 }
             }
@@ -94,18 +104,14 @@ class ProfileFragment : Fragment() {
             }else{
                 Toast.makeText(context, imageUri.toString(), Toast.LENGTH_SHORT).show()
             }
-
-
-            
-            
         }
 
-
         binding.tvLogout.setOnClickListener {
-            sharedPreference?.edit {
-                this.clear()
-                this.apply()
-            }
+//            sharedPreference?.edit {
+//                this.clear()
+//                this.apply()
+//            }
+            authViewModel.deletePref()
             it.findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
@@ -118,7 +124,6 @@ class ProfileFragment : Fragment() {
             selectedImage = true
         }
     }
-
 
     private fun openGallery() {
         val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)

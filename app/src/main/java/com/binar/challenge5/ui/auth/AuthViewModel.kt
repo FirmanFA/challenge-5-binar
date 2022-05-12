@@ -25,7 +25,25 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
 
     fun checkIfEmailExist(email: String) = repository.checkEmailIfExist(email)
 
+    //login preference
+    fun setEmailPreference(email: String){
+       viewModelScope.launch {
+           repository.setEmail(email)
+       }
+    }
 
+    fun setNamaPreference(nama: String){
+        viewModelScope.launch {
+            repository.setNama(nama)
+        }
+    }
+
+    fun deletePref() = viewModelScope.launch {
+        repository.deletePref()
+    }
+
+    val emailPreference = repository.getEmail()
+    val namaPreference = repository.getNama()
 
 }
 

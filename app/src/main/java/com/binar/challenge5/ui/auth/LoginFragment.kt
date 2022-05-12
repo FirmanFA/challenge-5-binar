@@ -1,6 +1,5 @@
 package com.binar.challenge5.ui.auth
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge4.utils.ValidationForm.isValid
-import com.binar.challenge5.MainActivity.Companion.SHARED_FILE
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.databinding.FragmentLoginBinding
+import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,7 +26,9 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao()))
+        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao(),
+        UserDataStoreManager(requireContext())
+        ))
     }
 
 //    private var myDatabase: MyDatabase? = null
@@ -42,11 +43,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        myDatabase = MyDatabase.getInstance(requireContext())
-//        val authRepository = AuthRepository(requireContext())
-        val sharedPreference = requireContext()
-            .getSharedPreferences(SHARED_FILE, Context.MODE_PRIVATE)
-
         binding.btnLogin.setOnClickListener {
 
             if (binding.etEmail.isValid() and binding.etPassword.isValid()){
@@ -56,17 +52,14 @@ class LoginFragment : Fragment() {
 
 
                 lifecycleScope.launch(Dispatchers.IO) {
-//                    val isLogin = myDatabase?.userDao()?.login(email, password)
                     val isLogin = authViewModel.login(email, password)
 
                     activity?.runOnUiThread {
                         if (isLogin == null){
                             Toast.makeText(context, "Pastikan email dan password benar", Toast.LENGTH_SHORT).show()
                         }else{
-                            val editor = sharedPreference.edit()
-                            editor.putString("islogin",email)
-                            editor.putString("name",isLogin.name)
-                            editor.apply()
+                            authViewModel.setEmailPreference(email)
+                            authViewModel.setNamaPreference(isLogin.name)
                             val action = LoginFragmentDirections
                                 .actionLoginFragmentToHomeFragment()
                             it.findNavController().navigate(action)

@@ -14,6 +14,7 @@ import com.binar.challenge4.utils.ValidationForm.isValid
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.databinding.FragmentRegisterBinding
+import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,7 +27,9 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao()))
+        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao(),
+        UserDataStoreManager(requireContext())
+        ))
     }
 
 
