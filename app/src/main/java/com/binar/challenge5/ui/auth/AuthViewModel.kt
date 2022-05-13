@@ -20,11 +20,15 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
 
     fun updateUser(user: User) = repository.updateUser(user)
 
+    suspend fun updateAvatarPath(id:Int, avatarPath: String) = repository.updateAvatarPath(id,avatarPath)
+
     fun login(email: String, password: String) = repository.login(email, password)
 
     fun register(user: User) = repository.register(user)
 
     fun checkIfEmailExist(email: String) = repository.checkEmailIfExist(email)
+
+
 
     //login preference
     fun setEmailPreference(email: String){

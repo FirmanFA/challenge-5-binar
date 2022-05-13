@@ -24,6 +24,7 @@ import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class DetailMovieFragment : Fragment() {
 
@@ -115,12 +116,9 @@ class DetailMovieFragment : Fragment() {
                     //favorite setup
 
                     binding.ivFavorite.setOnClickListener {_ ->
-
                         lifecycleScope.launch(Dispatchers.IO){
                             val isFavorite = detailViewModel.getFavoriteById(movieId)
-
                             activity?.runOnUiThread {
-
                                 if (isFavorite == null){
                                     val newFavorite = Favorite(
                                         id = it.data?.id,
@@ -130,17 +128,26 @@ class DetailMovieFragment : Fragment() {
                                         voteAverage = it.data?.voteAverage?:0.0)
                                     lifecycleScope.launch(Dispatchers.IO){
                                         detailViewModel.addToFavorite(newFavorite)
+                                        runBlocking(Dispatchers.Main) {
+                                            Toast.makeText(
+                                                context,
+                                                "Movie ditambahkan ke favorit!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
-
                                     detailViewModel.changeFavorite(true)
-
-
-
                                 }else{
                                     lifecycleScope.launch(Dispatchers.IO){
                                         detailViewModel.removeFromFavorite(isFavorite)
+                                        runBlocking(Dispatchers.Main) {
+                                            Toast.makeText(
+                                                context,
+                                                "Movie dihapus ke favorit!",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
                                     }
-
                                     detailViewModel.changeFavorite(false)
                                 }
                             }

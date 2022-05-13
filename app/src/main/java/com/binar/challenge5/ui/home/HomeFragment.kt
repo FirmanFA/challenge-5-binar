@@ -1,6 +1,5 @@
 package com.binar.challenge5.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.binar.challenge5.MainActivity
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
@@ -30,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    var once = false
 
     private val homeViewModel by viewModels<HomeViewModel> {
         HomeViewModelFactory(HomeRepository(ApiClient.instance,
@@ -54,7 +53,10 @@ class HomeFragment : Fragment() {
 //        binding.tvName.text = "Welcome,\n$nameLogin!"
 
         homeViewModel.namaPreference.observe(viewLifecycleOwner){
-            binding.tvName.text = "Welcome,\n$it!"
+            if (it!=""){
+                binding.tvName.text = "Welcome,\n$it!"
+            }
+
         }
 
 
@@ -126,6 +128,7 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
+
             if (it){
                 binding.discoverShimmer.startShimmer()
             }else{
@@ -136,10 +139,28 @@ class HomeFragment : Fragment() {
             }
         }
 
+//        var once = false
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
-            Handler(Looper.getMainLooper()).postDelayed({
-                showDiscoverMovies(it.results)
-            },2000)
+//            when(it.status){
+//                Status.LOADING -> {
+//                    binding.discoverShimmer.startShimmer()
+//                }
+//                Status.SUCCESS -> {
+//
+//                    binding.discoverShimmer.stopShimmer()
+//                    binding.discoverShimmer.isVisible = false
+//                    showDiscoverMovies(it.data?.results, once)
+//                    once = true
+//                }
+//                Status.ERROR -> {
+//                    binding.discoverShimmer.stopShimmer()
+//                    binding.discoverShimmer.isVisible = false
+//                    Toast.makeText(context, "Error ${it.message}", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+
+            showDiscoverMovies(it.results)
+
         }
 
         homeViewModel.apply {
@@ -196,7 +217,9 @@ class HomeFragment : Fragment() {
             R.dimen.viewpager_current_item_horizontal_margin
         )
 
+//        binding.vpDiscover.removeItemDecorationAt(0)
         binding.vpDiscover.addItemDecoration(itemDecoration)
+
         binding.vpDiscover.currentItem = 1
     }
 

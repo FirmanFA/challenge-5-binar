@@ -1,5 +1,6 @@
 package com.binar.challenge5.ui.home
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.binar.challenge5.data.api.Resource
 import com.binar.challenge5.data.api.model.MovieResponse
@@ -53,6 +54,55 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
         }
     }
 
+//    private val _discoverMovies: MutableLiveData<Resource<MovieResponse>> by lazy {
+//        MutableLiveData<Resource<MovieResponse>>().also {
+//            getDiscoverMovies()
+//        }
+//    }
+//    val discoverMovies: LiveData<Resource<MovieResponse>> = _discoverMovies
+//
+//    private fun getDiscoverMovies(){
+//        viewModelScope.launch {
+//            _discoverMovies.postValue(Resource.loading())
+//            try {
+//                val dataDiscover = repository.getDiscoverMovies()
+//                val successResource = Resource.success(dataDiscover)
+//                _discoverMovies.postValue(successResource)
+//            }catch (exp: Exception){
+//                _discoverMovies.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
+//            }
+//        }
+//    }
+
+//    val errorDiscover: MutableLiveData<String> = MutableLiveData()
+//    val isLoadingDiscover = MutableLiveData<Boolean>()
+//    private val _discoverMovies: MutableLiveData<MovieResponse> by lazy {
+//        MutableLiveData<MovieResponse>().also {
+//            getDiscoverMovies()
+//        }
+//    }
+//    val discoverMovies: LiveData<MovieResponse> = _discoverMovies
+//
+//    val debug: MutableLiveData<String> = MutableLiveData()
+
+//    fun getDiscoverMovies(){
+//        viewModelScope.launch {
+//            isLoadingDiscover.postValue(true)
+//            Log.d("getdiscover", "getDiscoverMovies: loading")
+//            try {
+//                val dataDiscover = repository.getDiscoverMovies()
+//                _discoverMovies.postValue(dataDiscover)
+////                _discoverMovies.postValue(Resource.success(repository.getDiscoverMovies()))
+//                isLoadingDiscover.postValue(false)
+//                Log.d("getdiscover", "getDiscoverMovies: try")
+//            }catch (exp: Exception){
+//                debug.postValue("masuk catch")
+//                errorDiscover.postValue(exp.localizedMessage)
+//                Log.d("getdiscover", "getDiscoverMovies: catch")
+//            }
+//        }
+//    }
+
     val errorDiscover: MutableLiveData<String> = MutableLiveData()
     val isLoadingDiscover = MutableLiveData<Boolean>()
     private val _discoverMovies: MutableLiveData<MovieResponse> by lazy {
@@ -82,6 +132,7 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
 
     //user preference
     val namaPreference = repository.getNama()
+    val emailPreferences = repository.getEmail()
 
 
 }

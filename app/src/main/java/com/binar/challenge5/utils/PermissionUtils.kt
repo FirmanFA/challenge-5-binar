@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 
 object PermissionUtils {
@@ -18,14 +19,12 @@ object PermissionUtils {
         ActivityCompat.shouldShowRequestPermissionRationale(activity, it)
     }
 
-    fun isPermissionsGranted(activity: Activity,permissions: Array<String>): Boolean {
+    fun isPermissionsGranted(activity: Activity,permissions: Array<String>,request:()->Unit): Boolean {
         return if (!hasPermissions(activity,*permissions)) {
             if (isShouldShowRationale(activity, *permissions)) {
                 showPermissionDeniedDialog(activity)
             } else {
-                ActivityCompat.requestPermissions(activity, permissions,
-                    REQUEST_CODE_PERMISSIONS
-                )
+                request.invoke()
             }
             false
         } else {

@@ -16,7 +16,7 @@ interface ApiService {
     suspend fun getAiringMovie(): MovieResponse
 
     @GET("discover/movie")
-    fun getDiscoverMovie(): Call<MovieResponse>
+     fun getDiscoverMovie(): Call<MovieResponse>
 
     @GET("movie/upcoming")
     suspend fun getUpcomingMovie(): MovieResponse

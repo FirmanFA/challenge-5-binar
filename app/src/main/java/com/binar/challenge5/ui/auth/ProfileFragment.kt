@@ -2,25 +2,23 @@ package com.binar.challenge5.ui.auth
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.binar.challenge5.MainActivity
 import com.binar.challenge5.R
 import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.User
@@ -30,7 +28,6 @@ import com.binar.challenge5.repository.AuthRepository
 import com.binar.challenge5.utils.AESEncryption
 import com.binar.challenge5.utils.PermissionUtils
 import com.binar.challenge5.utils.StorageUtils
-import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -39,7 +36,9 @@ import java.util.*
 class ProfileFragment : Fragment() {
 
     private var imageUri: Uri? = null
-    private var selectedImage = false
+//    private var imageUriToUpdate: Uri? = null
+    private var imageSource = -1
+    var iduser: Int? = -1
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
@@ -62,25 +61,30 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
-
-
-//        binding.ivPhotoProfile.setOnClickListener {
-//            openGallery()
-//        }
-        binding.btnCamera.setOnClickListener {
-            if (PermissionUtils.isPermissionsGranted(requireActivity(), getRequiredPermission())){
-                openCamera()
-            }
-        }
-
         binding.btnGallery.setOnClickListener {
-            if (PermissionUtils.isPermissionsGranted(requireActivity(), getRequiredPermission())){
+            if (PermissionUtils.isPermissionsGranted(requireActivity(), getRequiredPermission()) {
+                    activity?.let {
+                        requestPermissionLauncher.launch(getRequiredPermission())
+                        imageSource=1
+                    }
+                }){
                 openGallery()
             }
         }
 
-//        val email = sharedPreference?.getString("islogin","")
+        binding.btnCamera.setOnClickListener {
+            if (PermissionUtils.isPermissionsGranted(requireActivity(), getRequiredPermission()) {
+                    activity?.let {
+                        requestPermissionLauncher.launch(getRequiredPermission())
+                        imageSource=2
+                    }
+                }){
+                openCamera()
+            }
+        }
+
+
+
         var email = ""
 
         authViewModel.emailPreference.observe(viewLifecycleOwner){
@@ -88,14 +92,18 @@ class ProfileFragment : Fragment() {
             authViewModel.getUser(email)
         }
 
-        var iduser: Int? = -1
+
         authViewModel.user.observe(viewLifecycleOwner){
             binding.apply {
                 etName.setText(it?.name)
                 etPassword.setText(AESEncryption.decrypt(it?.password))
                 if (it?.avatarPath!=""){
-                    val imageUri = it?.avatarPath?.toUri()
-                    ivPhotoProfile.setImageURI(imageUri)
+                    if (imageUri!=null){
+                        ivPhotoProfile.setImageURI(imageUri)
+                    }else{
+                        ivPhotoProfile.setImageURI(it?.avatarPath?.toUri())
+                    }
+
                 }
             }
             iduser = it?.id
@@ -121,17 +129,9 @@ class ProfileFragment : Fragment() {
                     if (updateUser!=0){
                         authViewModel.getUser(email)
                         Toast.makeText(requireContext(), "update berhasil", Toast.LENGTH_SHORT).show()
-//                        val editor = sharedPreference!!.edit()
-//                        editor.putString("name",name)
-//                        editor.apply()
                         authViewModel.setNamaPreference(name)
                     }
                 }
-            }
-            if (imageUri==null){
-                Toast.makeText(context, "Default avatar", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(context, imageUri.toString(), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -148,11 +148,10 @@ class ProfileFragment : Fragment() {
             val data: Intent? = result.data
             imageUri = data?.data
             imageUri?.let { loadImage(it) }
-            selectedImage = true
         }
     }
 
-    private val cameraResult =
+    private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val bitmap = result.data?.extras?.get("data") as Bitmap
@@ -174,12 +173,29 @@ class ProfileFragment : Fragment() {
 
     private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraResult.launch(cameraIntent)
+        cameraLauncher.launch(cameraIntent)
     }
 
     private fun openGallery() {
         val intentGallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
         galleryLauncher.launch(intentGallery)
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            val granted = permissions.entries.all {
+                it.value
+            }
+            if (granted) {
+                openImage(imageSource)
+            }
+        }
+
+    private fun openImage(imageSource: Int) {
+        if (imageSource==1){
+            openGallery()
+        }else{
+            openCamera()
+        }
     }
 
     private fun getRequiredPermission(): Array<String> {

@@ -17,6 +17,7 @@ class AuthRepository(private val userDao: UserDao, private val userPref: UserDat
     fun checkEmailIfExist(email: String): User? = userDao.checkEmailExist(email)
     suspend fun getUser(email: String): User? = userDao.getUser(email)
     fun updateUser(user: User):Int = userDao.updatetUser(user)
+    suspend fun updateAvatarPath(id:Int,avatarPath:String):Int = userDao.updateAvatarPath(id, avatarPath)
 
     //data store
     suspend fun setEmail(email: String) = userPref.setEmail(email)

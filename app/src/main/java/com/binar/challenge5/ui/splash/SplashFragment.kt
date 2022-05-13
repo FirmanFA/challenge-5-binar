@@ -41,7 +41,7 @@ class SplashFragment : Fragment() {
 
         authViewModel.emailPreference.observe(viewLifecycleOwner){
             Handler(Looper.getMainLooper()).postDelayed({
-                if (it != "") {
+                if (it == "") {
                     val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()
                     findNavController().navigate(action)
                 }else{

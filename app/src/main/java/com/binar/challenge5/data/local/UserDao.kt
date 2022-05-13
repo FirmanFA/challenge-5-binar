@@ -21,4 +21,7 @@ interface UserDao {
     @Update
     fun updatetUser(user: User):Int
 
+    @Query("UPDATE User SET avatarPath=:avatarPath WHERE id=:id")
+    suspend fun updateAvatarPath(id: Int,avatarPath: String):Int
+
 }

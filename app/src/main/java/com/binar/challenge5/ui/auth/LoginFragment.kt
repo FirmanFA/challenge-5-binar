@@ -17,13 +17,12 @@ import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
     private val authViewModel by viewModels<AuthViewModel> {
         AuthViewModelFactory(AuthRepository(
@@ -59,11 +58,17 @@ class LoginFragment : Fragment() {
                         if (isLogin == null){
                             Toast.makeText(context, "Pastikan email dan password benar", Toast.LENGTH_SHORT).show()
                         }else{
-                            authViewModel.setEmailPreference(email)
-                            authViewModel.setNamaPreference(isLogin.name)
-                            val action = LoginFragmentDirections
-                                .actionLoginFragmentToHomeFragment()
-                            it.findNavController().navigate(action)
+                            lifecycleScope.launch(Dispatchers.IO){
+                                authViewModel.setEmailPreference(email)
+                                authViewModel.setNamaPreference(isLogin.name)
+
+                                runBlocking(Dispatchers.Main) {
+                                    val action = LoginFragmentDirections
+                                        .actionLoginFragmentToHomeFragment()
+                                    it.findNavController().navigate(action)
+                                }
+                            }
+
 
                         }
                     }

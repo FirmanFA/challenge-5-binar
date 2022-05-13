@@ -7,7 +7,7 @@ class HomeRepository(private val apiService: ApiService, private val userPref: U
 
 
     suspend fun getAiringMovies() = apiService.getAiringMovie()
-    fun getDiscoverMovies() = apiService.getDiscoverMovie()
+     fun getDiscoverMovies() = apiService.getDiscoverMovie()
     suspend fun getUpcomingMovies() = apiService.getUpcomingMovie()
     suspend fun getTopRatedMovies() = apiService.getTopRatedMovie()
     fun getEmail() = userPref.getEmail.asLiveData()
