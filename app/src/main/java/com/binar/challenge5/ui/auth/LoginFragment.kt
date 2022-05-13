@@ -26,8 +26,9 @@ class LoginFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao(),
-        UserDataStoreManager(requireContext())
+        AuthViewModelFactory(AuthRepository(
+            MyDatabase.getInstance(requireContext())!!.userDao(),
+            UserDataStoreManager(requireContext())
         ))
     }
 

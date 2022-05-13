@@ -81,7 +81,6 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     }
 
     //user preference
-    val emailPreference = repository.getEmail()
     val namaPreference = repository.getNama()
 
 

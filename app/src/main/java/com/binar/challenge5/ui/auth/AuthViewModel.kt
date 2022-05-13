@@ -3,6 +3,7 @@ package com.binar.challenge5.ui.auth
 import androidx.lifecycle.*
 import com.binar.challenge5.data.local.model.User
 import com.binar.challenge5.repository.AuthRepository
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 class AuthViewModel(private val repository: AuthRepository): ViewModel() {
@@ -43,7 +44,9 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
     }
 
     val emailPreference = repository.getEmail()
-    val namaPreference = repository.getNama()
+
+
+
 
 }
 
