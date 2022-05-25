@@ -9,18 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.binar.challenge5.R
-import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
-import com.binar.challenge5.datastore.UserDataStoreManager
-import com.binar.challenge5.repository.HomeRepository
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
 
@@ -30,11 +27,13 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     var once = false
 
-    private val homeViewModel by viewModels<HomeViewModel> {
-        HomeViewModelFactory(HomeRepository(ApiClient.instance,
-        UserDataStoreManager(requireContext())
-        ))
-    }
+//    private val homeViewModel by viewModels<HomeViewModel> {
+//        HomeViewModelFactory(HomeRepository(ApiClient.getInstance(requireContext().applicationContext),
+//        UserDataStoreManager(requireContext())
+//        ))
+//    }
+
+    private val homeViewModel by viewModel<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -18,6 +18,7 @@ import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RegisterFragment : Fragment() {
 
@@ -26,11 +27,13 @@ class RegisterFragment : Fragment() {
 //    lateinit var authRepository: AuthRepository
     private val binding get() = _binding!!
 
-    private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao(),
-        UserDataStoreManager(requireContext())
-        ))
-    }
+//    private val authViewModel by viewModels<AuthViewModel> {
+//        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(requireContext())!!.userDao(),
+//        UserDataStoreManager(requireContext())
+//        ))
+//    }
+
+    private val authViewModel: AuthViewModel by viewModel()
 
 
     override fun onCreateView(

@@ -30,24 +30,26 @@ import com.binar.challenge5.utils.PermissionUtils
 import com.binar.challenge5.utils.StorageUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
 class ProfileFragment : Fragment() {
 
     private var imageUri: Uri? = null
-//    private var imageUriToUpdate: Uri? = null
     private var imageSource = -1
     var iduser: Int? = -1
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(
-            MyDatabase.getInstance(requireContext())!!.userDao(),
-            UserDataStoreManager(requireContext())
-        ))
-    }
+//    private val authViewModel by viewModels<AuthViewModel> {
+//        AuthViewModelFactory(AuthRepository(
+//            MyDatabase.getInstance(requireContext())!!.userDao(),
+//            UserDataStoreManager(requireContext())
+//        ))
+//    }
+
+    private val authViewModel: AuthViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

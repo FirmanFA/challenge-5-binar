@@ -12,19 +12,22 @@ import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentFavoriteBinding
 import com.binar.challenge5.repository.FavoriteRepository
 import com.binar.challenge5.ui.home.FavoriteAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding
 
-    private val favoriteViewModel by viewModels<FavoriteViewModel> {
-        FavoriteViewModelFactory(
-            FavoriteRepository(
-                MyDatabase.getInstance(requireContext())!!.favoriteDao()
-            )
-        )
-    }
+//    private val favoriteViewModel by viewModels<FavoriteViewModel> {
+//        FavoriteViewModelFactory(
+//            FavoriteRepository(
+//                MyDatabase.getInstance(requireContext())!!.favoriteDao()
+//            )
+//        )
+//    }
+
+    private val favoriteViewModel by viewModel<FavoriteViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

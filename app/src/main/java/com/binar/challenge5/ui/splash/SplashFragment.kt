@@ -16,17 +16,21 @@ import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.datastore.UserDataStoreManager
 import com.binar.challenge5.repository.AuthRepository
 import com.binar.challenge5.ui.auth.AuthViewModel
-import com.binar.challenge5.ui.auth.AuthViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
+//import com.binar.challenge5.ui.auth.AuthViewModelFactory
 
 class SplashFragment : Fragment() {
 
 
-    private val authViewModel: AuthViewModel by viewModels {
-        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(
-            requireContext())!!.userDao(),
-            UserDataStoreManager(requireContext())
-        ))
-    }
+//    private val authViewModel: AuthViewModel by viewModels {
+//        AuthViewModelFactory(AuthRepository(MyDatabase.getInstance(
+//            requireContext())!!.userDao(),
+//            UserDataStoreManager(requireContext())
+//        ))
+//    }
+
+    private val authViewModel by viewModel<AuthViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

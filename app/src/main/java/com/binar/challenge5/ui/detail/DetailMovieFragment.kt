@@ -8,23 +8,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.binar.challenge5.R
-import com.binar.challenge5.data.api.ApiClient
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.data.api.model.ReviewResponse
-import com.binar.challenge5.data.local.MyDatabase
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
-import com.binar.challenge5.repository.DetailRepository
 import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailMovieFragment : Fragment() {
 
@@ -33,12 +30,14 @@ class DetailMovieFragment : Fragment() {
     private val args: DetailMovieFragmentArgs by navArgs()
 
 
-    private val detailViewModel by viewModels<DetailViewModel> {
-        DetailViewModelFactory(
-            DetailRepository(ApiClient.instance,
-            MyDatabase.getInstance(requireContext())!!.favoriteDao())
-        )
-    }
+//    private val detailViewModel by viewModels<DetailViewModel> {
+//        DetailViewModelFactory(
+//            DetailRepository(ApiClient.getInstance(requireContext().applicationContext),
+//            MyDatabase.getInstance(requireContext())!!.favoriteDao())
+//        )
+//    }
+
+    private val detailViewModel by viewModel<DetailViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

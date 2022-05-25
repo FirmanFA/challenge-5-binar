@@ -18,18 +18,21 @@ import com.binar.challenge5.repository.AuthRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val authViewModel by viewModels<AuthViewModel> {
-        AuthViewModelFactory(AuthRepository(
-            MyDatabase.getInstance(requireContext())!!.userDao(),
-            UserDataStoreManager(requireContext())
-        ))
-    }
+//    private val authViewModel by viewModels<AuthViewModel> {
+//        AuthViewModelFactory(AuthRepository(
+//            MyDatabase.getInstance(requireContext())!!.userDao(),
+//            UserDataStoreManager(requireContext())
+//        ))
+//    }
+
+    private val authViewModel: AuthViewModel by viewModel()
 
 //    private var myDatabase: MyDatabase? = null
     override fun onCreateView(

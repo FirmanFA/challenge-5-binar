@@ -66,13 +66,3 @@ class DetailViewModel(private val repository: DetailRepository):ViewModel() {
     fun removeFromFavorite(favorite: Favorite) = repository.removeFromFavorite(favorite)
 
 }
-
-class DetailViewModelFactory(private val repository: DetailRepository) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return DetailViewModel(repository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
