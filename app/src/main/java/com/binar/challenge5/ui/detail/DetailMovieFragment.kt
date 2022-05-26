@@ -16,6 +16,8 @@ import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.data.api.model.ReviewResponse
 import com.binar.challenge5.data.local.model.Favorite
 import com.binar.challenge5.databinding.FragmentDetailMovieBinding
+import com.binar.challenge5.repository.AuthRepository
+import com.binar.challenge5.repository.DetailRepository
 import com.binar.challenge5.ui.home.MovieAdapter
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +27,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailMovieFragment : Fragment() {
 
+
+
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
     private val args: DetailMovieFragmentArgs by navArgs()
-
 
 //    private val detailViewModel by viewModels<DetailViewModel> {
 //        DetailViewModelFactory(

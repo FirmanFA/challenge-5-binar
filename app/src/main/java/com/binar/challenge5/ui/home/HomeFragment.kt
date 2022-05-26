@@ -16,7 +16,9 @@ import com.binar.challenge5.R
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
+import com.binar.challenge5.repository.AuthRepository
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
