@@ -47,7 +47,7 @@ class AuthViewModel(private val repository: AuthRepository): ViewModel() {
         repository.deletePref()
     }
 
-    val emailPreference = repository.getEmail()
+    fun emailPreference() = repository.getEmail()
 
 
 

@@ -89,7 +89,7 @@ class ProfileFragment : Fragment() {
 
         var email = ""
 
-        authViewModel.emailPreference.observe(viewLifecycleOwner){
+        authViewModel.emailPreference().observe(viewLifecycleOwner){
             email = it
             authViewModel.getUser(email)
         }

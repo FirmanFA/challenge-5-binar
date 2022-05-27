@@ -35,13 +35,13 @@ class HomeRepositoryTest {
     @Test
     fun getAiringMovies() {
 
-        val responseDiscover = mockk<MovieResponse>()
+        val responseMovie = mockk<MovieResponse>()
 
         every {
             runBlocking {
                 apiService.getAiringMovie()
             }
-        } returns responseDiscover
+        } returns responseMovie
 
         runBlocking {
             homeRepository.getAiringMovies()
@@ -53,22 +53,5 @@ class HomeRepositoryTest {
             }
         }
 
-    }
-
-
-    @Test
-    fun getUpcomingMovies() {
-    }
-
-    @Test
-    fun getTopRatedMovies() {
-    }
-
-    @Test
-    fun getEmail() {
-    }
-
-    @Test
-    fun getNama() {
     }
 }

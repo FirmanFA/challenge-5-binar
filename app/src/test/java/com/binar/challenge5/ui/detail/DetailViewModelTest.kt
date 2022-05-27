@@ -71,44 +71,4 @@ class DetailViewModelTest {
         detailViewModel.getDetailMovie(1)
 
     }
-
-    @Test
-    fun getSimilarMovies() {
-    }
-
-    @Test
-    fun getMovieReviews() {
-    }
-
-    @Test
-    fun testGetDetailMovie() {
-    }
-
-    @Test
-    fun testGetSimilarMovies() {
-    }
-
-    @Test
-    fun testGetMovieReviews() {
-    }
-
-    @Test
-    fun isFavoriteExist() {
-    }
-
-    @Test
-    fun changeFavorite() {
-    }
-
-    @Test
-    fun getFavoriteById() {
-    }
-
-    @Test
-    fun addToFavorite() {
-    }
-
-    @Test
-    fun removeFromFavorite() {
-    }
 }

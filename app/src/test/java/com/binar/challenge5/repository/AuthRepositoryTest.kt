@@ -50,41 +50,6 @@ class AuthRepositoryTest {
                 userDao.login("email", "password")
             }
         }
-
-
-    }
-
-    @Test
-    fun register() {
-
-    }
-
-    @Test
-    fun checkEmailIfExist() {
-    }
-
-    @Test
-    fun getUser() {
-    }
-
-    @Test
-    fun updateUser() {
-    }
-
-    @Test
-    fun updateAvatarPath() {
-    }
-
-    @Test
-    fun setEmail() {
-    }
-
-    @Test
-    fun setNama() {
-    }
-
-    @Test
-    fun getEmail() {
     }
 
     @Test

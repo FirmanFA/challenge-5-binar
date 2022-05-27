@@ -43,7 +43,7 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        authViewModel.emailPreference.observe(viewLifecycleOwner){
+        authViewModel.emailPreference().observe(viewLifecycleOwner){
             Handler(Looper.getMainLooper()).postDelayed({
                 if (it == "") {
                     val action = SplashFragmentDirections.actionSplashFragmentToLoginFragment()

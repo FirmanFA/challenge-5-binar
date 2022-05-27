@@ -12,13 +12,12 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.binar.challenge5.BuildConfig
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
 import com.binar.challenge5.databinding.FragmentHomeBinding
-import com.binar.challenge5.repository.AuthRepository
 import com.binar.challenge5.utils.HorizontalMarginItemDecoration
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
 
@@ -27,13 +26,6 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    var once = false
-
-//    private val homeViewModel by viewModels<HomeViewModel> {
-//        HomeViewModelFactory(HomeRepository(ApiClient.getInstance(requireContext().applicationContext),
-//        UserDataStoreManager(requireContext())
-//        ))
-//    }
 
     private val homeViewModel by viewModel<HomeViewModel>()
 
@@ -49,10 +41,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val sharedPreference = context?.getSharedPreferences(MainActivity.SHARED_FILE, Context.MODE_PRIVATE)
-//        val nameLogin = sharedPreference?.getString("name","")
-//        binding.tvName.text = "Welcome,\n$nameLogin!"
-
         homeViewModel.namaPreference.observe(viewLifecycleOwner){
             if (it!=""){
                 binding.tvName.text = "Welcome,\n$it!"
@@ -61,11 +49,35 @@ class HomeFragment : Fragment() {
         }
 
 
+
+
         binding.ivAccount.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+
+            if (BuildConfig.FLAVOR == "full"){
+                it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+            }else{
+                Toast.makeText(
+                    context,
+                    "upgrade ke full version untuk menggunakan fitur ini",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+
         }
         binding.ivFavorite.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
+
+            if (BuildConfig.FLAVOR == "full"){
+                it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
+            }else{
+                Toast.makeText(
+                    context,
+                    "upgrade ke full version untuk menggunakan fitur ini",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+
         }
 
         homeViewModel.airingMovies.observe(viewLifecycleOwner){
@@ -140,7 +152,6 @@ class HomeFragment : Fragment() {
             }
         }
 
-//        var once = false
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
 //            when(it.status){
 //                Status.LOADING -> {
@@ -218,7 +229,6 @@ class HomeFragment : Fragment() {
             R.dimen.viewpager_current_item_horizontal_margin
         )
 
-//        binding.vpDiscover.removeItemDecorationAt(0)
         binding.vpDiscover.addItemDecoration(itemDecoration)
 
         binding.vpDiscover.currentItem = 1
