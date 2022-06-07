@@ -53,7 +53,7 @@ class SplashFragment : Fragment() {
                     findNavController().navigate(action)
                 }
             },2000)
-        }
+        }//
 
 
 
