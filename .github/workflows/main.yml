@@ -35,3 +35,6 @@ jobs:
 
       - name: Build Project               // 4
         run: ./gradlew assembleDebug --stacktrace
+        
+      - name: Run Tests                   // 3
+        run: ./gradlew test
