@@ -19,9 +19,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillNode
+import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.composed
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalAutofill
+import androidx.compose.ui.platform.LocalAutofillTree
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -73,6 +82,7 @@ class LoginActivity : ComponentActivity() {
                                             runBlocking(Dispatchers.Main) {
                                                 val intent = Intent(this@LoginActivity, HomeActivity::class.java)
                                                 startActivity(intent)
+                                                finish()
                                             }
                                         }
 
@@ -115,6 +125,7 @@ fun HeaderLogin() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun InputForm(onClickLogin: (String, String) -> Unit, onClickRegister: () -> Unit) {
 
@@ -133,7 +144,9 @@ fun InputForm(onClickLogin: (String, String) -> Unit, onClickRegister: () -> Uni
             onValueChange = {email.value = it },
             keyboardOptions =  KeyboardOptions(keyboardType = KeyboardType.Email),
             placeholder = { Text(text = "Email") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().autofill(
+                autofillTypes = listOf(AutofillType.EmailAddress),
+                onFill = {email.value = it}),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 backgroundColor = Color.White,
                 unfocusedBorderColor = TmdbLightBlue,
@@ -150,7 +163,9 @@ fun InputForm(onClickLogin: (String, String) -> Unit, onClickRegister: () -> Uni
             value = password,
             onValueChange = {password = it },
             placeholder = { Text(text = "Password") },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().autofill(
+                autofillTypes = listOf(AutofillType.Password),
+                onFill = {email.value = it}),
             visualTransformation =
             if (passwordHidden) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -210,6 +225,28 @@ fun ActionItem(onClickLogin:() -> Unit, onClickRegister:() -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 
+    }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+fun Modifier.autofill(
+    autofillTypes: List<AutofillType>,
+    onFill: ((String) -> Unit),
+) = composed {
+    val autofill = LocalAutofill.current
+    val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
+    LocalAutofillTree.current += autofillNode
+
+    this.onGloballyPositioned {
+        autofillNode.boundingBox = it.boundsInWindow()
+    }.onFocusChanged { focusState ->
+        autofill?.run {
+            if (focusState.isFocused) {
+                requestAutofillForNode(autofillNode)
+            } else {
+                cancelAutofillForNode(autofillNode)
+            }
+        }
     }
 }
 

@@ -139,7 +139,7 @@ class ProfileFragment : Fragment() {
 
         binding.tvLogout.setOnClickListener {
             authViewModel.deletePref()
-            it.findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
+//            it.findNavController().navigate(R.id.action_profileFragment_to_loginFragment)
         }
     }
 

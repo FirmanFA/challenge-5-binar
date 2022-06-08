@@ -64,6 +64,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.binar.challenge5'
 }
 
 dependencies {
@@ -81,6 +82,17 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    implementation "com.google.accompanist:accompanist-pager:0.24.10-beta"
+
+    // If using indicators, also depend on
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.24.10-beta"
+
+    implementation "com.google.accompanist:accompanist-placeholder-material:0.24.10-beta"
+
+
+    implementation("io.coil-kt:coil-compose:2.1.0")
+
     def room_version = "2.4.2"
 
     // Room components

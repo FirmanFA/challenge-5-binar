@@ -50,8 +50,8 @@ class SplashFragment : Fragment() {
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     startActivity(intent)
                 }else{
-                    val action = SplashFragmentDirections.actionSplashFragmentToHomeFragment()
-                    findNavController().navigate(action)
+//                    val action = SplashFragmentDirections.actionSplashFragmentToHomeFragment()
+//                    findNavController().navigate(action)
                 }
             },2000)
         }
