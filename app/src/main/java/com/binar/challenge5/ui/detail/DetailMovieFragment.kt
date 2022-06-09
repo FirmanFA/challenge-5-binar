@@ -31,7 +31,7 @@ class DetailMovieFragment : Fragment() {
 
     private var _binding: FragmentDetailMovieBinding? = null
     private val binding get() = _binding!!
-    private val args: DetailMovieFragmentArgs by navArgs()
+//    private val args: DetailMovieFragmentArgs by navArgs()
 
 //    private val detailViewModel by viewModels<DetailViewModel> {
 //        DetailViewModelFactory(
@@ -54,7 +54,8 @@ class DetailMovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val movieId = args.movieId
+//        val movieId = args.movieId
+        val movieId = 0
 
         detailViewModel.detailMovie.observe(viewLifecycleOwner){
 

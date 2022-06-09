@@ -66,9 +66,9 @@ class LoginFragment : Fragment() {
                                 authViewModel.setNamaPreference(isLogin.name)
 
                                 runBlocking(Dispatchers.Main) {
-                                    val action = LoginFragmentDirections
-                                        .actionLoginFragmentToHomeFragment()
-                                    it.findNavController().navigate(action)
+//                                    val action = LoginFragmentDirections
+//                                        .actionLoginFragmentToHomeFragment()
+//                                    it.findNavController().navigate(action)
                                 }
                             }
 
@@ -83,9 +83,9 @@ class LoginFragment : Fragment() {
         }
 
         binding.btnRegister.setOnClickListener {
-            val action = LoginFragmentDirections
-                .actionLoginFragmentToRegisterFragment()
-            it.findNavController().navigate(action)
+//            val action = LoginFragmentDirections
+//                .actionLoginFragmentToRegisterFragment()
+//            it.findNavController().navigate(action)
         }
 
 

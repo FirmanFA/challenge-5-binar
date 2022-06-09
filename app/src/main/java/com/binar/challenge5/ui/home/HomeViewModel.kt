@@ -1,14 +1,10 @@
 package com.binar.challenge5.ui.home
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.binar.challenge5.data.api.Resource
 import com.binar.challenge5.data.api.model.MovieResponse
 import com.binar.challenge5.repository.HomeRepository
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeViewModel(private val repository: HomeRepository): ViewModel() {
 
@@ -54,25 +50,21 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
         }
     }
 
-//    private val _discoverMovies: MutableLiveData<Resource<MovieResponse>> by lazy {
-//        MutableLiveData<Resource<MovieResponse>>().also {
-//            getDiscoverMovies()
-//        }
-//    }
-//    val discoverMovies: LiveData<Resource<MovieResponse>> = _discoverMovies
-//
-//    private fun getDiscoverMovies(){
-//        viewModelScope.launch {
-//            _discoverMovies.postValue(Resource.loading())
-//            try {
-//                val dataDiscover = repository.getDiscoverMovies()
-//                val successResource = Resource.success(dataDiscover)
-//                _discoverMovies.postValue(successResource)
-//            }catch (exp: Exception){
-//                _discoverMovies.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
-//            }
-//        }
-//    }
+    private val _discoverMovies = MutableLiveData<Resource<MovieResponse>>()
+    val discoverMovies: LiveData<Resource<MovieResponse>> = _discoverMovies
+
+    fun getDiscoverMovies(){
+        viewModelScope.launch {
+            _discoverMovies.postValue(Resource.loading())
+            try {
+                val dataDiscover = repository.getDiscoverMovies()
+                val successResource = Resource.success(dataDiscover)
+                _discoverMovies.postValue(successResource)
+            }catch (exp: Exception){
+                _discoverMovies.postValue(Resource.error(exp.localizedMessage ?: "Error occured"))
+            }
+        }
+    }
 
 //    val errorDiscover: MutableLiveData<String> = MutableLiveData()
 //    val isLoadingDiscover = MutableLiveData<Boolean>()
@@ -103,36 +95,39 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
 //        }
 //    }
 
-    val errorDiscover: MutableLiveData<String> = MutableLiveData()
-    val isLoadingDiscover = MutableLiveData<Boolean>()
-    private val _discoverMovies: MutableLiveData<MovieResponse> by lazy {
-        MutableLiveData<MovieResponse>().also {
-            getDiscoverMovies()
-        }
-    }
-    val discoverMovies: LiveData<MovieResponse> = _discoverMovies
-
-    private fun getDiscoverMovies(){
-        isLoadingDiscover.postValue(true)
-        repository.getDiscoverMovies().enqueue(object : Callback<MovieResponse> {
-            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
-                isLoadingDiscover.postValue(false)
-                if (response.code() == 200){
-                    _discoverMovies.postValue(response.body())
-                }else{
-                    errorDiscover.postValue("Error")
-                }
-            }
-
-            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
-                isLoadingDiscover.postValue(false)
-            }
-        })
-    }
+//    val errorDiscover: MutableLiveData<String> = MutableLiveData()
+//    val isLoadingDiscover = MutableLiveData<Boolean>()
+//    private val _discoverMovies: MutableLiveData<MovieResponse> by lazy {
+//        MutableLiveData<MovieResponse>().also {
+//            getDiscoverMovies()
+//        }
+//    }
+//    val discoverMovies: LiveData<MovieResponse> = _discoverMovies
+//
+//    private fun getDiscoverMovies(){
+//        isLoadingDiscover.postValue(true)
+//        repository.getDiscoverMovies().enqueue(object : Callback<MovieResponse> {
+//            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+//                isLoadingDiscover.postValue(false)
+//                if (response.code() == 200){
+//                    _discoverMovies.postValue(response.body())
+//                }else{
+//                    errorDiscover.postValue("Error")
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+//                isLoadingDiscover.postValue(false)
+//            }
+//        })
+//    }
 
     //user preference
     val namaPreference = repository.getNama()
     val emailPreferences = repository.getEmail()
+    fun deletePref() = viewModelScope.launch {
+        repository.deletePref()
+    }
 
 
 }

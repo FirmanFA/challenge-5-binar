@@ -52,9 +52,9 @@ class FavoriteFragment : Fragment() {
 
     private fun showFavoriteMovies(list: List<Favorite?>?) {
         val adapter= FavoriteAdapter {
-            val action = FavoriteFragmentDirections
-                .actionFavoriteFragmentToDetailMovieFragment(it.id!!)
-            findNavController().navigate(action)
+//            val action = FavoriteFragmentDirections
+//                .actionFavoriteFragmentToDetailMovieFragment(it.id!!)
+//            findNavController().navigate(action)
         }
         adapter.submitList(list)
         binding?.rvFavorite?.adapter = adapter

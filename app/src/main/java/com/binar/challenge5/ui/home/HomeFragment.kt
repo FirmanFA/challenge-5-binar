@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
         binding.ivAccount.setOnClickListener {
 
             if (BuildConfig.FLAVOR == "full"){
-                it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
+//                it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
             }else{
                 Toast.makeText(
                     context,
@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
         binding.ivFavorite.setOnClickListener {
 
             if (BuildConfig.FLAVOR == "full"){
-                it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
+//                it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
             }else{
                 Toast.makeText(
                     context,
@@ -140,17 +140,17 @@ class HomeFragment : Fragment() {
 
         }
 
-        homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
-
-            if (it){
-                binding.discoverShimmer.startShimmer()
-            }else{
-                Handler(Looper.getMainLooper()).postDelayed({
-                    binding.discoverShimmer.stopShimmer()
-                    binding.discoverShimmer.isVisible = false
-                },2000)
-            }
-        }
+//        homeViewModel.isLoadingDiscover.observe(viewLifecycleOwner){
+//
+//            if (it){
+//                binding.discoverShimmer.startShimmer()
+//            }else{
+//                Handler(Looper.getMainLooper()).postDelayed({
+//                    binding.discoverShimmer.stopShimmer()
+//                    binding.discoverShimmer.isVisible = false
+//                },2000)
+//            }
+//        }
 
         homeViewModel.discoverMovies.observe(viewLifecycleOwner){
 //            when(it.status){
@@ -171,7 +171,7 @@ class HomeFragment : Fragment() {
 //                }
 //            }
 
-            showDiscoverMovies(it.results)
+//            showDiscoverMovies(it.results)
 
         }
 
@@ -187,8 +187,8 @@ class HomeFragment : Fragment() {
 
     private fun showTopRatedMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
+//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+//            findNavController().navigate(action)
         }
         adapter.submitList(results)
         binding.rvToprated.adapter = adapter
@@ -196,8 +196,8 @@ class HomeFragment : Fragment() {
 
     private fun showUpcomingMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
+//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+//            findNavController().navigate(action)
         }
         adapter.submitList(results)
         binding.rvUpcoming.adapter = adapter
@@ -205,8 +205,8 @@ class HomeFragment : Fragment() {
 
     private fun showDiscoverMovies(results: List<Result>?){
         val discoverAdapter = DiscoverAdapter{
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
+//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+//            findNavController().navigate(action)
         }
         discoverAdapter.submitList(results)
         binding.vpDiscover.adapter = discoverAdapter
@@ -236,8 +236,8 @@ class HomeFragment : Fragment() {
 
     private fun showAiringMovies(results: List<Result>?) {
         val adapter= MovieAdapter {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
-            findNavController().navigate(action)
+//            val action = HomeFragmentDirections.actionHomeFragmentToDetailMovieFragment(it.id)
+//            findNavController().navigate(action)
         }
         adapter.submitList(results)
         binding.rvAiring.adapter = adapter
