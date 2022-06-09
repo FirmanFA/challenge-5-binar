@@ -5,8 +5,12 @@ import android.widget.Space
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
@@ -15,10 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +50,10 @@ import com.binar.challenge5.ui.ui.theme.TmdbLightBlue
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
+import com.binar.challenge5.data.api.model.ReviewResponse
+import com.binar.challenge5.ui.home.DefaultMovieItem
 
 class DetailActivity : ComponentActivity() {
 
@@ -76,8 +81,15 @@ class DetailActivity : ComponentActivity() {
                     ""
                 )
             )
+            val movieReviewsResponse = viewModel.movieReviews.observeAsState(
+                Resource(
+                    Status.LOADING,
+                    null,
+                    ""
+                )
+            )
 
-            Challenge5Theme {
+            Challenge5Theme(darkTheme = false) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -88,6 +100,11 @@ class DetailActivity : ComponentActivity() {
                         mutableStateOf(listOf<Result>())
                     }
                     similarMoviesState = similarMovieResponse.value.data?.results ?: listOf()
+
+                    var movieReviewsState by rememberSaveable {
+                        mutableStateOf(listOf<ReviewResponse.Result>())
+                    }
+                    movieReviewsState = movieReviewsResponse.value.data?.results ?: listOf()
 
                     Column(
                         modifier = Modifier.verticalScroll(rememberScrollState())
@@ -125,6 +142,22 @@ class DetailActivity : ComponentActivity() {
 
                         DefaultMovieList(movieList = similarMoviesState)
 
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(
+                            text = "Similar Movies",
+                            modifier = Modifier
+                                .align(Alignment.Start)
+                                .padding(start = 24.dp),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight(800),
+                            color = TmdbLightBlue
+                        )
+
+                        MovieReviewList(reviewList = movieReviewsState)
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
                     }
 
                 }
@@ -133,6 +166,7 @@ class DetailActivity : ComponentActivity() {
 
         viewModel.getDetailMovie(movieId)
         viewModel.getSimilarMovies(movieId)
+        viewModel.getMovieReviews(movieId)
     }
 
 }
@@ -315,6 +349,124 @@ fun MovieOverview(overview: String) {
             )
         )
     }
+}
+
+@Composable
+fun MovieReviewList(reviewList: List<ReviewResponse.Result>, onItemClick: (Int) -> Unit = {}) {
+
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 24.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(reviewList) { dataReview ->
+            MovieReviewItem(
+                currentReview = dataReview,
+                onItemClick = onItemClick
+            )
+        }
+    }
+
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun MovieReviewItem(currentReview: ReviewResponse.Result, onItemClick: (Int) -> Unit = {}) {
+
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    Card(
+        modifier = Modifier
+            .widthIn(min = 0.dp,max = 300.dp),
+        shape = RoundedCornerShape(15.dp),
+        backgroundColor = Color(0xFF07477C),
+        onClick = {
+            openDialog = true
+        }
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp)
+        ){
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Card(
+                    shape = CircleShape,
+                    modifier = Modifier
+                        .size(40.dp)
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("${currentReview.authorDetails.avatarPath?.drop(1)}")
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "Airing Poster",
+                        contentScale = ContentScale.Crop
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = currentReview.author,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight(500),
+                    color = Color.White,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = currentReview.content,
+                fontSize = 14.sp,
+                fontWeight = FontWeight(400),
+                color = Color.White,
+                style = TextStyle(
+                    textAlign = TextAlign.Justify,
+                    ),
+                maxLines = 5,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+        }
+    }
+
+    if (openDialog) {
+
+        AlertDialog(
+            onDismissRequest = {
+                openDialog = false
+            },
+            title = {
+                Text(text = currentReview.author)
+            },
+            text = {
+                Text(currentReview.content)
+            },
+            confirmButton = {
+                OutlinedButton(
+                    onClick = {
+                        openDialog = false
+                    }) {
+                    Text("OK")
+                }
+            },
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
+    }
+
+}
+
+@Composable
+fun ReviewDialog(author: String, content: String, open: Boolean = false) {
+    val openDialog = remember { mutableStateOf(false)  }
+    openDialog.value = open
+
 }
 
 @Preview(showBackground = true)
