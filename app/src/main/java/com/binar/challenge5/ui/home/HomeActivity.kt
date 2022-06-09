@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -45,6 +46,7 @@ import com.binar.challenge5.data.api.Resource
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.MovieResponse
 import com.binar.challenge5.data.api.model.Result
+import com.binar.challenge5.ui.auth.LoginActivity
 import com.binar.challenge5.ui.detail.DetailActivity
 import com.binar.challenge5.ui.ui.theme.Challenge5Theme
 import com.binar.challenge5.ui.ui.theme.TmdbBlue
@@ -109,8 +111,14 @@ class HomeActivity : ComponentActivity() {
                             Toast.makeText(this@HomeActivity, "Coming Soon", Toast.LENGTH_SHORT)
                                 .show()
                         }, profileClick =  {
-                            Toast.makeText(this@HomeActivity, "Coming Soon", Toast.LENGTH_SHORT)
-                                .show()
+                            //logout
+
+                            viewModel.deletePref()
+                            val intent = Intent(this@HomeActivity, LoginActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                            finish()
+
                         })
 
                         var discoverMoviesState by rememberSaveable {
@@ -234,6 +242,10 @@ class HomeActivity : ComponentActivity() {
         viewModel.getTopRatedMovies()
 
     }
+
+    override fun onBackPressed() {
+        finishAffinity()
+    }
 }
 
 @Composable
@@ -248,22 +260,22 @@ fun HeaderHome(name: String = "", favoriteClick: () -> Unit, profileClick: () ->
                 contentDescription = "logo",
                 Modifier
                     .padding(start = 24.dp)
-                    .height(24.dp),
+                    .height(32.dp),
                 contentScale = ContentScale.None,
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(
-                onClick = favoriteClick
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = "Favorite",
-                    tint = Color.White,
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
+//            IconButton(
+//                onClick = favoriteClick
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Filled.Favorite,
+//                    contentDescription = "Favorite",
+//                    tint = Color.White,
+//                    modifier = Modifier.size(32.dp)
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.width(8.dp))
 
             IconButton(
                 onClick = profileClick,
@@ -271,7 +283,7 @@ fun HeaderHome(name: String = "", favoriteClick: () -> Unit, profileClick: () ->
                     .padding(end = 16.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Filled.AccountCircle,
+                    imageVector = Icons.Filled.Logout,
                     contentDescription = "Favorite",
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)

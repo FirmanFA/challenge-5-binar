@@ -125,6 +125,9 @@ class HomeViewModel(private val repository: HomeRepository): ViewModel() {
     //user preference
     val namaPreference = repository.getNama()
     val emailPreferences = repository.getEmail()
+    fun deletePref() = viewModelScope.launch {
+        repository.deletePref()
+    }
 
 
 }

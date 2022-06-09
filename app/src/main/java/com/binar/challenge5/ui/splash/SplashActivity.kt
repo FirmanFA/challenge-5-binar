@@ -80,15 +80,10 @@ class SplashActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview3() {
     Challenge5Theme {
-        Greeting("Android")
+
     }
 }

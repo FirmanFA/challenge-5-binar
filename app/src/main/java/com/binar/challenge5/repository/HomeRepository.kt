@@ -12,6 +12,7 @@ class HomeRepository(private val apiService: ApiService, private val userPref: U
     suspend fun getTopRatedMovies() = apiService.getTopRatedMovie()
     fun getEmail() = userPref.getEmail.asLiveData()
     fun getNama() = userPref.getNama.asLiveData()
+    suspend fun deletePref() = userPref.deletePref()
 
 
 }
