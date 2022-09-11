@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.binar.challenge5.BuildConfig
 import com.binar.challenge5.R
 import com.binar.challenge5.data.api.Status
 import com.binar.challenge5.data.api.model.Result
@@ -53,29 +52,13 @@ class HomeFragment : Fragment() {
 
         binding.ivAccount.setOnClickListener {
 
-            if (BuildConfig.FLAVOR == "full"){
-                it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
-            }else{
-                Toast.makeText(
-                    context,
-                    "upgrade ke full version untuk menggunakan fitur ini",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            it.findNavController().navigate(R.id.action_homeFragment_to_profileFragment)
 
 
         }
         binding.ivFavorite.setOnClickListener {
 
-            if (BuildConfig.FLAVOR == "full"){
-                it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
-            }else{
-                Toast.makeText(
-                    context,
-                    "upgrade ke full version untuk menggunakan fitur ini",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+            it.findNavController().navigate(R.id.action_homeFragment_to_favoriteFragment)
 
 
         }

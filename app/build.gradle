@@ -10,7 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.binar.challenge6"
+        applicationId "com.binar.challenge5"
         minSdk 23
         targetSdk 32
         versionCode 1
@@ -25,23 +25,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    flavorDimensions "version"
-
-    productFlavors{
-
-        demo{
-            dimension "version"
-            applicationIdSuffix ".demo"
-            versionNameSuffix "-demo"
-        }
-        full{
-            dimension "version"
-            applicationIdSuffix ".full"
-            versionNameSuffix "-full"
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
